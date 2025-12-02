@@ -72,8 +72,13 @@ class DataLoader {
       };
 
       // Load files one by one to avoid overwhelming the browser
-      const metro16 = await loadAndFilter('data/census_16_metro.csv', '2016');
-      const metro21 = await loadAndFilter('data/census_21_metro.csv', '2021');
+      // Use GitHub's raw content URL for LFS files on GitHub Pages
+      const baseUrl = window.location.hostname === 'lichenr3.github.io' 
+        ? 'https://github.com/lichenr3/STA313_Final_Project/raw/main/'
+        : '';
+      
+      const metro16 = await loadAndFilter(baseUrl + 'data/census_16_metro.csv', '2016');
+      const metro21 = await loadAndFilter(baseUrl + 'data/census_21_metro.csv', '2021');
 
       this.rawData.metro2016 = metro16;
       this.rawData.metro2021 = metro21;
