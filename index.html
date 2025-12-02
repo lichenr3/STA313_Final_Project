@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commuter Mode & Emissions Visualization Project</title>
+  <meta name="description" content="Interactive visualization storytelling template.">
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/vis1.css">
+  <link rel="stylesheet" href="css/vis2.css">
+</head>
+
+<body>
+
+  <div id="app-container">
+    <aside id="sidebar">
+
+      <div id="vis0-controls" class="control-section active">
+        <h3>Section 1: Macro Context</h3>
+        <p class="helper-text">Options to filter the general remote work trends.</p>
+        <p>[Placeholder: Filter Controls for General Context]</p>
+      </div>
+
+      <div id="vis1-pie-controls" class="control-section">
+        <h3>Section 2a: Population Distribution</h3>
+        <p class="helper-text">Filter to see population pie chart.</p>
+
+        <div class="control-group">
+          <label for="cma-select-pie">Region Selection</label>
+          <select id="cma-select-pie">
+            <option value="overview">Overview (All Regions)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            Income Bracket: <span id="income-value-pie">$0 - $150,000</span>
+          </label>
+          <div class="range-slider-container">
+            <div class="slider-track"></div>
+            <input type="range" id="income-min-pie" min="0" max="150000" step="5000" value="0">
+            <input type="range" id="income-max-pie" min="0" max="150000" step="5000" value="150000">
+          </div>
+        </div>
+
+        <div class="info-panel" id="info-panel-pie" style="margin-top: 20px;">
+          <h3>Insights</h3>
+          <p>Interact with the pie chart to see details here.</p>
+        </div>
+      </div>
+
+      <div id="vis1-bar-controls" class="control-section">
+        <h3>Section 2b: Transit Mode Changes</h3>
+        <p class="helper-text">Filter to see commute mode bar chart.</p>
+
+        <div class="control-group">
+          <label for="cma-select-bar">Region Selection</label>
+          <select id="cma-select-bar">
+            <option value="overview">Overview (All Regions)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            Income Bracket: <span id="income-value-bar">$0 - $150,000</span>
+          </label>
+          <div class="range-slider-container">
+            <div class="slider-track"></div>
+            <input type="range" id="income-min-bar" min="0" max="150000" step="5000" value="0">
+            <input type="range" id="income-max-bar" min="0" max="150000" step="5000" value="150000">
+          </div>
+        </div>
+
+        <div id="secondary-filters-bar" class="secondary-controls" style="display: block;">
+          <div class="control-group">
+            <label>Metric Display</label>
+            <div class="radio-row">
+              <label><input type="radio" name="data-type-bar" value="percentage" checked> Percentage (%)</label>
+              <label><input type="radio" name="data-type-bar" value="actual"> Absolute Count</label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Mode Types</label>
+            <div class="checkbox-row">
+              <label><input type="checkbox" id="show-public-bar" checked> Public Transit</label>
+              <label><input type="checkbox" id="show-private-bar" checked> Private Vehicle</label>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Comparison</label>
+            <label><input type="checkbox" id="show-net-change-bar"> Show Net Change (2016-21)</label>
+          </div>
+        </div>
+
+        <div class="info-panel" id="info-panel-bar" style="margin-top: 20px;">
+          <h3>Insights</h3>
+          <p>Interact with the bar chart to see details here.</p>
+        </div>
+      </div>
+
+      <div id="vis2-controls" class="control-section">
+        <h3>Section 3: Impact Analysis</h3>
+        <p class="helper-text">Isolate specific modes to see environmental data.</p>
+
+        <div class="control-group">
+          <label for="vis2-mode-select">Target Commute Mode</label>
+          <select id="vis2-mode-select">
+            <option value="all">All Modes</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="vis2-CMA-select">Target Region</label>
+          <select id="vis2-CMA-select">
+            <option value="all">All Regions</option>
+          </select>
+        </div>
+
+        <button id="vis2-reset-btn" class="btn-reset">Reset Impact View</button>
+
+        <div class="summary-box" style="margin-top: 20px; height: auto; max-height: 400px; overflow-y: auto;">
+          <h3>Data Summary</h3>
+          <div class="table-responsive">
+            <table id="vis2-summary-table">
+              <thead>
+                <tr>
+                  <th>Region</th>
+                  <th>Commute Mode</th>
+                  <th>2016 Share</th>
+                  <th>2021 Share</th>
+                  <th>Change (pp)</th>
+                  <th>Change (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+          <p id="vis2-no-data-msg" style="display:none; color:#888;">No data for current selection.</p>
+        </div>
+      </div>
+
+    </aside>
+
+    <main id="main-content">
+
+      <section id="intro" data-controls="vis0-controls">
+        <header class="article-header">
+          <h1>[Placeholder: Main Project Title]</h1>
+          <p class="subtitle">[Placeholder: A catchy subtitle summarizing the core conflict or question]</p>
+        </header>
+        <div class="narrative-text">
+          <p class="lead">
+            [Placeholder: Introduction/Hook. Provide the "Why". Describe the status quo before the change (e.g.,
+            standard commuting) and the disruptive event (e.g., Pandemic/WFH).]
+          </p>
+          <p>
+            [Placeholder: Navigation Hint. Briefly explain how to use this website (scrolling, interacting with the
+            sidebar).]
+          </p>
+        </div>
+      </section>
+
+      <section id="vis0-section" data-controls="vis0-controls">
+        <div class="narrative-text">
+          <h2>1. The Context: [Placeholder Topic Name]</h2>
+          <p>
+            [Placeholder: Set the scene. Explain the general trend of Remote Work vs. Commuting across the entire
+            country or major cities. Give the user a baseline understanding.]
+          </p>
+        </div>
+
+        <div class="chart-container-wrapper" style="height: 600px;">
+          <div id="vis0-container"
+            style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border: 2px dashed #ccc;">
+            <p style="color: #666; font-size: 1.2em;">[Vis 0: Placeholder for General Trend Chart]</p>
+          </div>
+        </div>
+
+        <div class="narrative-text">
+          <p>
+            [Placeholder: Transition/Observation. Comment on what the chart above shows. "As we can see, while many
+            stayed home, a specific group did not..."]
+          </p>
+        </div>
+      </section>
+
+      <section id="vis1-pie-section" data-controls="vis1-pie-controls">
+        <div class="narrative-text">
+          <h2>2. The Demographics: Who Kept Moving?</h2>
+          <p>
+            [Placeholder: Introduce the specific population group (Essential Workers / Low Income). Explain why we are
+            zooming in on them specifically.]
+          </p>
+          <blockquote>
+            [Placeholder: Optional highlight or quote about the specific user group.]
+          </blockquote>
+          <p>
+            [Placeholder: Instructions. "Use the sidebar to filter by Industry or Income to see how the population size
+            varies."]
+          </p>
+        </div>
+
+        <div class="chart-container-wrapper" style="height: 600px;">
+          <div id="chart-container-pie" style="width: 100%; height: 100%;">
+            <div id="pie-chart-container" style="width: 100%; height: 100%;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="vis1-bar-section" data-controls="vis1-bar-controls">
+        <div class="narrative-text">
+          <h2>Changes in Transit Habits</h2>
+          <p>
+            [Placeholder: Analysis of the Bar Chart. Discuss the shift between Public Transit and Private Vehicles. Are
+            they driving more? Taking the bus less?]
+          </p>
+          <p>
+            [Placeholder: Insight. Connect the filters (Income/Industry) to the mode choice. E.g., "Retail workers
+            showed the largest drop in public transit usage..."]
+          </p>
+        </div>
+
+        <div class="chart-container-wrapper" style="height: 600px;">
+          <div id="chart-container-bar" style="width: 100%; height: 100%;">
+            <div id="bar-chart-container" style="width: 100%; height: 100%;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="bridge" data-controls="vis1-bar-controls"
+        style="min-height: 40vh; display: flex; flex-direction: column; justify-content: center;">
+        <div class="narrative-text">
+          <h2>From Behavior to Impact</h2>
+          <p>
+            [Placeholder: Bridge Text. We have seen *how* people moved. Now, let's look at the *consequences* of these
+            movements, specifically regarding carbon footprint and city infrastructure.]
+          </p>
+        </div>
+      </section>
+
+      <section id="vis2-section" data-controls="vis2-controls">
+        <div class="narrative-text">
+          <h2>3. Environmental Implications</h2>
+          <p>
+            [Placeholder: Intro to Vis 2. Explain the correlation between the mode shifts observed above and calculated
+            emissions.]
+          </p>
+        </div>
+
+        <div class="chart-container-wrapper">
+          <div id="vis2-chart-main" class="chart-container" style="height: 500px; box-shadow: none; padding: 0;"></div>
+        </div>
+
+        <div class="narrative-text" style="margin-top: 40px;">
+          <h3>Emissions vs. Commute Efficiency</h3>
+          <p>
+            [Placeholder: Deep dive text for the scatter plot. Explain outliers (e.g., Why is Calgary different from
+            Montreal?). Discuss the "efficiency" of moving these essential workers.]
+          </p>
+        </div>
+
+        <div class="chart-container-wrapper">
+          <div class="scatter-box">
+            <div id="vis2-chart-scatter" class="chart-container-small"
+              style="height: 500px; box-shadow: none; padding: 0;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="conclusion" data-controls="vis2-controls" style="min-height: 50vh;">
+        <div class="narrative-text">
+          <h2>Conclusion & Future Outlook</h2>
+          <p>
+            [Placeholder: Summary. Recap the 3 main findings from the sections above.]
+          </p>
+          <p>
+            [Placeholder: Call to Action or Final Thought. What should policy makers or citizens do with this
+            information? e.g., "Improving transit safety is crucial for essential workers..."]
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <p>[Placeholder: Data Sources & Methodology Description]</p>
+        <p>[Placeholder: Credits / Author Name / Date]</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="js/stateManager.js"></script>
+  <script src="js/scrollManager.js"></script>
+  <script src="js/vis1/utils.js"></script>
+  <script src="js/vis1/dataLoader.js"></script>
+  <script src="js/vis1/dataProcessor.js"></script>
+  <script src="js/vis1/pieChart.js"></script>
+  <script src="js/vis1/barChart.js"></script>
+  <script src="js/vis1/filters.js"></script>
+  <script src="js/vis1/vis1_main.js"></script>
+  <script src="js/vis2/vis2_main.js"></script>
+  <script src="js/vis2/logic.js"></script>
+</body>
+
+</html>
