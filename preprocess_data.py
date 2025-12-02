@@ -17,18 +17,18 @@ CMA_NAMES = {
     '835': 'Edmonton'
 }
 
-# MODE 归一化函数（与 JS 中的逻辑一致）
+# MODE 归一化函数（与 JS 中的逻辑完全一致，保留所有模式）
 def normalize_mode(mode_code):
     mode_map = {
-        '1': 'Public transit',
-        '2': 'Private vehicle',
-        '3': 'Walk/Bike',
-        '4': 'Work from home',
-        '5': 'Other',
-        '6': 'Walk/Bike',
-        '7': 'Other',
-        '8': 'Other',
-        '9': 'Other'
+        '1': 'Car, driver',
+        '2': 'Car, passenger',
+        '3': 'Public transit',
+        '4': 'Walk',
+        '5': 'Bicycle',
+        '6': 'Motorcycle',
+        '7': 'Taxicab',
+        '8': 'Other method',
+        '9': 'Other method'  # 9 也映射到 Other method
     }
     return mode_map.get(str(mode_code), 'Unknown')
 

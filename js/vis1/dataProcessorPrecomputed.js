@@ -110,15 +110,18 @@ class DataProcessorPrecomputed {
   convertToChartData(percentages, counts) {
     const cmaNames = this.dataLoader.getCMANames();
     
-    return Object.entries(percentages)
-      .map(([cma, percentage]) => ({
+    // 使用固定的 CMA 顺序
+    const cmaOrder = ['535', '462', '505', '933', '825', '835'];
+    
+    return cmaOrder
+      .filter(cma => percentages[cma] > 0)  // 只包含有数据的 CMA
+      .map(cma => ({
         cma,
         name: cmaNames[cma] || cma,
-        percentage: percentage,
-        count: counts[cma] || 0
-      }))
-      .filter(d => d.percentage > 0)
-      .sort((a, b) => b.percentage - a.percentage);
+        percentage: percentages[cma],
+        count: counts[cma] || 0,
+        color: getCMAColor(cma)  // 添加颜色
+      }));
   }
 
   /**

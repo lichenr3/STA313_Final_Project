@@ -27,11 +27,25 @@ const MODE_CATEGORIES = {
   other: ['Other method', 'Motorcycle', 'Taxicab']
 };
 
+// 定义通勤方式的固定顺序和颜色
+const MODE_ORDER = ['Car, driver', 'Car, passenger', 'Public transit', 'Walk', 'Bicycle', 'Motorcycle', 'Taxicab', 'Other method'];
+
+const MODE_COLORS = {
+  'Car, driver': '#e53935',
+  'Car, passenger': '#ef5350',
+  'Public transit': '#43a047',
+  'Walk': '#1e88e5',
+  'Bicycle': '#66bb6a',
+  'Motorcycle': '#757575',
+  'Taxicab': '#9e9e9e',
+  'Other method': '#bdbdbd'
+};
+
 // Color scales
 const COLOR_SCALES = {
   sustainable: d3.scaleOrdinal()
     .domain(['Public transit', 'Bicycle', 'Walk', 'Walked only', 'Bicycle only'])
-    .range(['#43a047', '#66bb6a', '#81c784', '#a5d6a7', '#c8e6c9']),
+    .range(['#43a047', '#66bb6a', '#1e88e5', '#a5d6a7', '#c8e6c9']),
 
   car: d3.scaleOrdinal()
     .domain(['Car, driver', 'Car, passenger', 'Car, truck or van -- as a driver', 'Car, truck or van -- as a passenger'])
@@ -39,7 +53,7 @@ const COLOR_SCALES = {
 
   other: d3.scaleOrdinal()
     .domain(['Other method', 'Motorcycle', 'Taxicab'])
-    .range(['#757575', '#9e9e9e', '#bdbdbd']),
+    .range(['#bdbdbd', '#757575', '#9e9e9e']),
 
   cma: d3.scaleOrdinal()
     .domain(['535', '462', '505', '933', '825', '835'])
@@ -159,6 +173,12 @@ function normalizeMode(mode) {
 
 // Get color for a mode
 function getModeColor(mode) {
+  // 首先检查是否在固定颜色映射中
+  if (MODE_COLORS[mode]) {
+    return MODE_COLORS[mode];
+  }
+
+  // 否则按类别查找
   const category = getModeCategory(mode);
 
   if (category === 'sustainable') {
@@ -195,6 +215,8 @@ if (typeof module !== 'undefined' && module.exports) {
     CMA_METADATA,
     ESSENTIAL_NAICS,
     MODE_CATEGORIES,
+    MODE_ORDER,
+    MODE_COLORS,
     COLOR_SCALES,
     Tooltip,
     formatNumber,

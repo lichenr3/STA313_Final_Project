@@ -153,10 +153,14 @@ class BarChart {
   }
 
   prepareRegularData(data, showPublic, showPrivate, showOther) {
-    return Object.entries(data)
-      .map(([mode, value]) => ({
+    // 使用固定顺序 MODE_ORDER，如果存在的话
+    const orderedModes = typeof MODE_ORDER !== 'undefined' ? MODE_ORDER : Object.keys(data);
+    
+    return orderedModes
+      .filter(mode => mode in data)  // 只包含有数据的模式
+      .map(mode => ({
         mode,
-        value,
+        value: data[mode],
         category: getModeCategory(mode),
         color: getModeColor(mode)
       }))
@@ -165,25 +169,27 @@ class BarChart {
         if (d.category === 'car' && !showPrivate) return false;
         if (d.category === 'other' && !showOther) return false;
         return true;
-      })
-      .sort((a, b) => b.value - a.value);
+      });
   }
 
   prepareNetChangeData(aggregatedData, showPublic, showPrivate, showOther) {
-    return Object.entries(aggregatedData.netChange)
-      .map(([mode, value]) => ({
+    // 使用固定顺序
+    const orderedModes = typeof MODE_ORDER !== 'undefined' ? MODE_ORDER : Object.keys(aggregatedData.netChange);
+    
+    return orderedModes
+      .filter(mode => mode in aggregatedData.netChange)
+      .map(mode => ({
         mode,
-        value,
+        value: aggregatedData.netChange[mode],
         category: getModeCategory(mode),
-        color: value >= 0 ? '#43a047' : '#e53935'
+        color: aggregatedData.netChange[mode] >= 0 ? '#43a047' : '#e53935'
       }))
       .filter(d => {
         if (d.category === 'sustainable' && !showPublic) return false;
         if (d.category === 'car' && !showPrivate) return false;
         if (d.category === 'other' && !showOther) return false;
         return true;
-      })
-      .sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+      });
   }
 
   updateAxes() {

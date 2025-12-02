@@ -61,8 +61,9 @@ class DataLoaderPrecomputed {
     for (const [incomeKey, segmentData] of Object.entries(cmaData)) {
       const [segmentMin, segmentMax] = incomeKey.split('-').map(Number);
       
-      // 检查这个分段是否在请求的收入范围内
-      if (segmentMin >= incomeMin && segmentMax <= incomeMax) {
+      // 检查这个分段是否与请求的收入范围有交集
+      // 交集条件：分段的最大值 > 范围最小值 AND 分段的最小值 < 范围最大值
+      if (segmentMax > incomeMin && segmentMin < incomeMax) {
         // 合并 mode counts
         for (const [mode, count] of Object.entries(segmentData.mode_counts_2016)) {
           modeCounts2016[mode] = (modeCounts2016[mode] || 0) + count;
