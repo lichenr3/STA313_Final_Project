@@ -2,7 +2,7 @@
 
 class App {
   constructor() {
-    this.dataLoader = dataLoader;
+    this.dataLoader = new DataLoaderPrecomputed();
     this.dataProcessor = null;
     this.pieFilterManager = null;
     this.barFilterManager = null;
@@ -18,16 +18,16 @@ class App {
 
       const loadingMessage = document.querySelector('.loading p');
       if (loadingMessage) {
-        loadingMessage.textContent = 'Loading census data (large files, please wait)...';
+        loadingMessage.textContent = 'Loading precomputed data...';
       }
 
       await this.dataLoader.loadAll();
 
       if (loadingMessage) {
-        loadingMessage.textContent = 'Processing data...';
+        loadingMessage.textContent = 'Initializing visualizations...';
       }
 
-      this.dataProcessor = new DataProcessor(this.dataLoader);
+      this.dataProcessor = new DataProcessorPrecomputed(this.dataLoader);
 
       // Initialize separate filter managers
       this.pieFilterManager = new PieFilterManager();
