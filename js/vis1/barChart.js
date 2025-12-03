@@ -6,46 +6,46 @@ class BarChart {
     this.data = [];
     this.displayMode = 'percentage'; // 'percentage' or 'actual'
     this.showNetChange = false;
-    
+
     // Chart dimensions
     this.width = options.width || 900;
     this.height = options.height || 450;
-    this.margin = options.margin || { top: 60, right: 40, bottom: 100, left: 80 };
-    
+    this.margin = options.margin || { top: 60, right: 40, bottom: 120, left: 80 };
+
     this.innerWidth = this.width - this.margin.left - this.margin.right;
     this.innerHeight = this.height - this.margin.top - this.margin.bottom;
-    
+
     this.tooltip = new Tooltip();
-    
+
     this.init();
   }
 
   init() {
     // Clear container
     this.container.html('');
-    
+
     // Create SVG
     this.svg = this.container
       .append('svg')
       .attr('width', this.width)
       .attr('height', this.height)
       .attr('class', 'bar-chart');
-    
+
     // Create main group
     this.g = this.svg.append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
-    
+
     // Create axes groups
     this.xAxisGroup = this.g.append('g')
       .attr('class', 'x-axis')
       .attr('transform', `translate(0, ${this.innerHeight})`);
-    
+
     this.yAxisGroup = this.g.append('g')
       .attr('class', 'y-axis');
-    
+
     // Create bars group
     this.barsGroup = this.g.append('g').attr('class', 'bars');
-    
+
     // Add title
     this.titleText = this.svg.append('text')
       .attr('x', this.width / 2)
@@ -55,7 +55,7 @@ class BarChart {
       .style('font-size', '18px')
       .style('font-weight', 'bold')
       .style('fill', '#8e24aa');
-    
+
     // Add axis labels
     this.yLabel = this.svg.append('text')
       .attr('transform', 'rotate(-90)')
@@ -64,7 +64,7 @@ class BarChart {
       .attr('text-anchor', 'middle')
       .style('font-size', '14px')
       .style('fill', '#666');
-    
+
     this.xLabel = this.svg.append('text')
       .attr('x', this.width / 2)
       .attr('y', this.height - 10)
@@ -72,15 +72,15 @@ class BarChart {
       .style('font-size', '14px')
       .style('fill', '#666')
       .text('Commute Mode');
-    
+
     // Create scales
     this.xScale = d3.scaleBand()
       .range([0, this.innerWidth])
       .padding(0.2);
-    
+
     this.yScale = d3.scaleLinear()
       .range([this.innerHeight, 0]);
-    
+
     // Style axes
     this.styleAxes();
   }
@@ -89,7 +89,7 @@ class BarChart {
     this.svg.selectAll('.axis path, .axis line')
       .style('stroke', '#666')
       .style('stroke-width', 1);
-    
+
     this.svg.selectAll('.axis text')
       .style('font-size', '12px')
       .style('fill', '#333');
@@ -104,13 +104,13 @@ class BarChart {
       showPrivate = true,
       showOther = true
     } = options;
-    
+
     this.displayMode = displayMode;
     this.showNetChange = showNetChange;
-    
+
     // Prepare data based on options
     let chartData;
-    
+
     if (showNetChange) {
       // Show net change
       chartData = this.prepareNetChangeData(aggregatedData, showPublic, showPrivate, showOther);
@@ -118,32 +118,32 @@ class BarChart {
       this.updateYLabel('Percentage Point Change (%)');
     } else {
       // Show percentage or actual counts
-      const yearData = year === '2016' 
+      const yearData = year === '2016'
         ? (displayMode === 'percentage' ? aggregatedData.percentages2016 : aggregatedData.counts2016)
         : (displayMode === 'percentage' ? aggregatedData.percentages2021 : aggregatedData.counts2021);
-      
+
       chartData = this.prepareRegularData(yearData, showPublic, showPrivate, showOther);
       this.updateTitle(`Commute Mode Distribution (${year})`);
       this.updateYLabel(displayMode === 'percentage' ? 'Percentage (%)' : 'Number of Workers');
     }
-    
+
     // Update scales
     this.xScale.domain(chartData.map(d => d.mode));
-    
+
     const yExtent = d3.extent(chartData, d => d.value);
-    const yMax = showNetChange 
+    const yMax = showNetChange
       ? Math.max(Math.abs(yExtent[0]), Math.abs(yExtent[1])) * 1.1
       : yExtent[1] * 1.1;
     const yMin = showNetChange ? -yMax : 0;
-    
+
     this.yScale.domain([yMin, yMax]);
-    
+
     // Update axes
     this.updateAxes();
-    
+
     // Draw bars
     this.drawBars(chartData);
-    
+
     // Draw zero line if showing net change
     if (showNetChange) {
       this.drawZeroLine();
@@ -153,29 +153,32 @@ class BarChart {
   }
 
   prepareRegularData(data, showPublic, showPrivate, showOther) {
-    // 使用固定顺序 MODE_ORDER，如果存在的话
-    const orderedModes = typeof MODE_ORDER !== 'undefined' ? MODE_ORDER : Object.keys(data);
-    
-    return orderedModes
-      .filter(mode => mode in data)  // 只包含有数据的模式
-      .map(mode => ({
-        mode,
-        value: data[mode],
-        category: getModeCategory(mode),
-        color: getModeColor(mode)
-      }))
-      .filter(d => {
-        if (d.category === 'sustainable' && !showPublic) return false;
-        if (d.category === 'car' && !showPrivate) return false;
-        if (d.category === 'other' && !showOther) return false;
-        return true;
-      });
+    // Convert data object to array
+    let chartData = Object.keys(data).map(mode => ({
+      mode,
+      value: data[mode],
+      category: getModeCategory(mode),
+      color: getModeColor(mode)
+    }));
+
+    // Filter based on options
+    chartData = chartData.filter(d => {
+      if (d.category === 'sustainable' && !showPublic) return false;
+      if (d.category === 'car' && !showPrivate) return false;
+      if (d.category === 'other' && !showOther) return false;
+      return true;
+    });
+
+    // Sort by value descending
+    chartData.sort((a, b) => b.value - a.value);
+
+    return chartData;
   }
 
   prepareNetChangeData(aggregatedData, showPublic, showPrivate, showOther) {
     // 使用固定顺序
     const orderedModes = typeof MODE_ORDER !== 'undefined' ? MODE_ORDER : Object.keys(aggregatedData.netChange);
-    
+
     return orderedModes
       .filter(mode => mode in aggregatedData.netChange)
       .map(mode => ({
@@ -197,19 +200,30 @@ class BarChart {
     const xAxis = d3.axisBottom(this.xScale)
       .tickSize(0)
       .tickPadding(10);
-    
+
     this.xAxisGroup
       .transition()
       .duration(transitionDuration())
       .call(xAxis);
-    
-    // Rotate x-axis labels
+
+    // Rotate x-axis labels and truncate long text
     this.xAxisGroup.selectAll('text')
       .style('text-anchor', 'end')
       .attr('dx', '-0.8em')
       .attr('dy', '0.15em')
-      .attr('transform', 'rotate(-45)');
-    
+      .attr('transform', 'rotate(-45)')
+      .each(function() {
+        const text = d3.select(this);
+        const originalText = text.text();
+        // Truncate if longer than 20 characters
+        if (originalText.length > 20) {
+          text.text(originalText.substring(0, 18) + '...')
+            .append('title')
+            .text(originalText);
+        }
+      })
+      .style('font-size', '11px');
+
     // Y axis
     const yAxis = d3.axisLeft(this.yScale)
       .ticks(8)
@@ -220,12 +234,12 @@ class BarChart {
           return formatNumber(d);
         }
       });
-    
+
     this.yAxisGroup
       .transition()
       .duration(transitionDuration())
       .call(yAxis);
-    
+
     this.styleAxes();
   }
 
@@ -233,7 +247,7 @@ class BarChart {
     // Bind data
     const bars = this.barsGroup.selectAll('.bar')
       .data(data, d => d.mode);
-    
+
     // Enter
     const barsEnter = bars.enter()
       .append('rect')
@@ -246,13 +260,13 @@ class BarChart {
       .style('cursor', 'pointer')
       .on('mouseover', (event, d) => this.handleMouseOver(event, d))
       .on('mouseout', (event, d) => this.handleMouseOut(event, d));
-    
+
     barsEnter.transition()
       .duration(transitionDuration())
       .ease(easeFunction())
       .attr('y', d => d.value >= 0 ? this.yScale(d.value) : this.yScale(0))
       .attr('height', d => Math.abs(this.yScale(d.value) - this.yScale(0)));
-    
+
     // Update
     bars.transition()
       .duration(transitionDuration())
@@ -262,7 +276,7 @@ class BarChart {
       .attr('y', d => d.value >= 0 ? this.yScale(d.value) : this.yScale(0))
       .attr('height', d => Math.abs(this.yScale(d.value) - this.yScale(0)))
       .attr('fill', d => d.color);
-    
+
     // Exit
     bars.exit()
       .transition()
@@ -276,7 +290,7 @@ class BarChart {
   drawZeroLine() {
     // Remove existing zero line
     this.g.selectAll('.zero-line').remove();
-    
+
     // Add new zero line
     this.g.append('line')
       .attr('class', 'zero-line')
@@ -295,10 +309,10 @@ class BarChart {
       .transition()
       .duration(200)
       .attr('opacity', 0.7);
-    
+
     // Show tooltip
     let html = `<strong>${d.mode}</strong><br/>`;
-    
+
     if (this.showNetChange) {
       html += `<span style="color: ${d.value >= 0 ? '#43a047' : '#e53935'};">`;
       html += `Net Change: ${d.value >= 0 ? '+' : ''}${formatPercent(d.value)}%</span>`;
@@ -307,7 +321,7 @@ class BarChart {
     } else {
       html += `<span style="color: #8e24aa;">Workers: ${formatNumber(Math.round(d.value))}</span>`;
     }
-    
+
     this.tooltip.show(html, event);
   }
 
@@ -317,7 +331,7 @@ class BarChart {
       .transition()
       .duration(200)
       .attr('opacity', 1);
-    
+
     // Hide tooltip
     this.tooltip.hide();
   }
@@ -335,10 +349,10 @@ class BarChart {
     this.height = height;
     this.innerWidth = this.width - this.margin.left - this.margin.right;
     this.innerHeight = this.height - this.margin.top - this.margin.bottom;
-    
+
     this.xScale.range([0, this.innerWidth]);
     this.yScale.range([this.innerHeight, 0]);
-    
+
     this.init();
   }
 

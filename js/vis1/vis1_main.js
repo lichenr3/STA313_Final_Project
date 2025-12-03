@@ -185,8 +185,8 @@ class App {
     if (!infoPanel) return;
 
     let html = '<div class="info-content">';
-    html += `<h3>Transit Mode Summary</h3>`;
-    html += `<p>Showing data for: <strong>${filterState.cma === 'overview' ? 'All Regions' : getCMAName(filterState.cma)}</strong></p>`;
+    html += `<h3>Insights</h3>`;
+    html += `<p>Interact with the bar chart to see details here.</p>`;
     html += `</div>`;
     infoPanel.innerHTML = html;
   }

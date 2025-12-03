@@ -72,21 +72,6 @@ class PieChart {
     this.arcs2021Group = this.g.append('g').attr('class', 'arcs-2021');
     this.centerGroup = this.g.append('g').attr('class', 'center-text');
 
-    // Add rings labels
-    this.g.append('text')
-      .attr('y', -this.outerRadius2021 - 10)
-      .attr('text-anchor', 'middle')
-      .style('font-size', '12px')
-      .style('fill', '#666')
-      .text('Outer: 2021');
-
-    this.g.append('text')
-      .attr('y', -this.outerRadius2016 - 5)
-      .attr('text-anchor', 'middle')
-      .style('font-size', '12px')
-      .style('fill', '#666')
-      .text('Inner: 2016');
-
     // Add title
     this.titleText = this.svg.append('text')
       .attr('x', this.width / 2)
@@ -95,7 +80,7 @@ class PieChart {
       .attr('class', 'chart-title')
       .style('font-size', '18px')
       .style('font-weight', 'bold')
-      .style('fill', '#8e24aa')
+      .style('fill', '#702040') // Updated to match theme
       .text('Low-Income Essential Workers Distribution (2016 vs 2021)');
 
     // Add legend
@@ -104,19 +89,20 @@ class PieChart {
 
   createLegend() {
     // Use CMA_METADATA from utils.js if available, otherwise hardcode
-    const cmaCodes = ['535', '462', '505', '933', '825', '835', '999'];
+    const cmaCodes = ['535', '462', '505', '933', '825', '835'];
     const legendData = cmaCodes.map(code => ({
       name: getCMAName(code),
       color: getCMAColor(code)
     }));
 
+    const legendY = this.height - this.margin.bottom + 10;
     const legend = this.svg.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${this.margin.left}, ${this.height - this.margin.bottom + 20})`);
+      .attr('transform', `translate(${this.margin.left}, ${legendY})`);
 
     // Calculate layout
-    const itemsPerRow = 4;
-    const itemWidth = 120;
+    const itemsPerRow = 3; // Reduced to 3 to fit better
+    const itemWidth = 140;
     const rowHeight = 25;
 
     const legendItems = legend.selectAll('.legend-item')
@@ -127,13 +113,16 @@ class PieChart {
       .attr('transform', (d, i) => {
         const row = Math.floor(i / itemsPerRow);
         const col = i % itemsPerRow;
-        return `translate(${col * itemWidth}, ${row * rowHeight})`;
+        // Center the legend block
+        const xOffset = (this.width - (itemsPerRow * itemWidth)) / 2;
+        return `translate(${xOffset + col * itemWidth}, ${row * rowHeight})`;
       });
 
     legendItems.append('rect')
       .attr('width', 15)
       .attr('height', 15)
-      .attr('fill', d => d.color);
+      .attr('fill', d => d.color)
+      .attr('rx', 3); // Rounded corners
 
     legendItems.append('text')
       .attr('x', 20)
@@ -141,6 +130,18 @@ class PieChart {
       .style('font-size', '12px')
       .style('fill', '#333')
       .text(d => d.name);
+
+    // Add Inner/Outer layer labels below legend
+    const guideY = (Math.ceil(legendData.length / itemsPerRow) * rowHeight) + 15;
+    const guideGroup = legend.append('g')
+      .attr('transform', `translate(${this.width / 2}, ${guideY})`);
+
+    guideGroup.append('text')
+      .attr('text-anchor', 'middle')
+      .style('font-size', '12px')
+      .style('fill', '#666')
+      .style('font-style', 'italic')
+      .text('Inner Ring: 2016  |  Outer Ring: 2021');
   }
 
   update(data) {

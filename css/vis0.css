@@ -1,0 +1,544 @@
+/**
+ * Vis0 Custom Styles
+ * Combined styles from 111.html (icon chart) and 2222.html (comparison chart)
+ */
+
+/* ==================== ICON CHART STYLES ==================== */
+
+/* Dashboard Card */
+.vis0-dashboard-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
+}
+
+.vis0-dashboard-card h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* Dynamic Subtitle */
+.vis0-subtitle {
+    color: #7f8c8d;
+    font-size: 16px;
+    margin-bottom: 30px;
+    min-height: 24px;
+    /* Prevents jump when text changes */
+}
+
+.highlight-unit {
+    color: #2c3e50;
+    font-weight: 700;
+    background: #eef2f7;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Controls Row */
+.vis0-controls-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    border: 1px solid #eee;
+}
+
+.vis0-control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.vis0-control-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #95a5a6;
+    letter-spacing: 0.5px;
+}
+
+/* Dropdown */
+.vis0-select {
+    padding: 8px 12px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+    min-width: 200px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Unit Toggle Buttons */
+.vis0-toggle-container {
+    display: flex;
+    background: #e0e0e0;
+    border-radius: 6px;
+    padding: 3px;
+}
+
+.vis0-toggle-btn {
+    padding: 6px 16px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.vis0-toggle-btn.active {
+    background: white;
+    color: #2c3e50;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Chart Grid */
+.vis0-chart-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    /* Label | Icons */
+    row-gap: 35px;
+    align-items: center;
+}
+
+.vis0-year-label {
+    font-size: 24px;
+    font-weight: 800;
+    color: #2c3e50;
+    text-align: right;
+    padding-right: 25px;
+}
+
+.vis0-icon-row {
+    display: grid;
+    grid-template-columns: repeat(16, 35px);
+    /* Reduced from 42px */
+    gap: 4px;
+    /* Reduced from 8px */
+    max-width: 100%;
+}
+
+/* Icons */
+.vis0-icon-box {
+    width: 35px;
+    /* Reduced from 42px */
+    height: 35px;
+    /* Reduced from 42px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 20px;
+    color: white;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.vis0-icon-box.enter {
+    animation: vis0PopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+@keyframes vis0PopIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.vis0-icon-box:hover {
+    transform: scale(1.15);
+    z-index: 10;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Legend */
+.vis0-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 50px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+    justify-content: center;
+}
+
+.vis0-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.vis0-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* Colors for different commute modes */
+.bg-car {
+    background-color: #95a5a6;
+}
+
+/* Gray */
+.bg-transit {
+    background-color: #d35400;
+}
+
+/* Orange */
+.bg-wfh {
+    background-color: #1abc9c;
+}
+
+/* Teal */
+.bg-active {
+    background-color: #3498db;
+}
+
+/* Blue */
+
+/* Icon Chart Tooltip */
+#vis0-icon-tooltip {
+    position: absolute;
+    background: #2c3e50;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    line-height: 1.4;
+}
+
+#vis0-icon-tooltip .tooltip-header {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #ecf0f1;
+}
+
+/* ==================== COMPARISON CHART STYLES ==================== */
+
+.vis0-comparison-container {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
+}
+
+.vis0-comparison-container h3 {
+    color: #333;
+    text-align: center;
+    margin: 0 0 5px 0;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    font-size: 24px;
+}
+
+.vis0-comparison-subtitle {
+    text-align: center;
+    color: #666;
+    margin: 0 auto 30px auto;
+    font-size: 15px;
+    max-width: 700px;
+    line-height: 1.4em;
+}
+
+.vis0-comparison-note {
+    font-size: 12px;
+    color: #bbb;
+    font-style: italic;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Bars */
+.vis0-bar-context-transit {
+    fill: #ffcccc;
+    transition: fill 0.2s;
+}
+
+.vis0-bar-hero-transit {
+    fill: #c0392b;
+}
+
+.vis0-bar-context-wfh {
+    fill: #e1d5e7;
+    transition: fill 0.2s;
+}
+
+.vis0-bar-hero-wfh {
+    fill: #6c3483;
+}
+
+/* Hover States */
+.vis0-bar-group:hover .vis0-bar-context-transit {
+    fill: #e6b0aa;
+}
+
+.vis0-bar-group:hover .vis0-bar-context-wfh {
+    fill: #d7bde2;
+}
+
+/* Labels */
+.vis0-city-label {
+    font-size: 13px;
+    fill: #999;
+    alignment-baseline: middle;
+    font-weight: 400;
+}
+
+.vis0-city-label.is-hero {
+    fill: #000;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.vis0-val-label {
+    font-size: 11px;
+    font-weight: bold;
+    fill: #555;
+    alignment-baseline: middle;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.vis0-val-label.is-hero {
+    opacity: 1;
+    font-size: 13px;
+    fill: #000;
+}
+
+.vis0-bar-group:hover .vis0-val-label {
+    opacity: 1;
+}
+
+/* Axis & Grid */
+.vis0-grid-line {
+    stroke: #f5f5f5;
+    stroke-dasharray: 4, 4;
+}
+
+.vis0-axis-text {
+    font-size: 14px;
+    fill: #999;
+    font-weight: 500;
+}
+
+.vis0-header-transit {
+    font-size: 14px;
+    font-weight: bold;
+    fill: #c0392b;
+}
+
+.vis0-header-wfh {
+    font-size: 14px;
+    font-weight: bold;
+    fill: #6c3483;
+}
+
+/* Annotation */
+.vis0-annotation-line {
+    stroke: #333;
+    stroke-width: 1px;
+    fill: none;
+}
+
+.vis0-annotation-text {
+    font-size: 12px;
+    fill: #333;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* Comparison Chart Tooltip */
+.vis0-comparison-tooltip {
+    position: absolute;
+    text-align: left;
+    padding: 12px;
+    font: 12px sans-serif;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    opacity: 0;
+    border-radius: 4px;
+    line-height: 1.5em;
+    z-index: 100;
+    max-width: 240px;
+}
+
+.vis0-comparison-tooltip .tt-header {
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    display: block;
+}
+
+.vis0-comparison-tooltip .tt-pop {
+    font-size: 12px;
+    color: #666;
+    font-weight: normal;
+    float: right;
+}
+
+.vis0-comparison-tooltip .tt-val {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Info Panel for Statistics */
+.info-panel {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.info-panel h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-panel p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+/* Radio buttons styling */
+.radio-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.radio-row label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.radio-row label:hover {
+    background-color: #f0f0f0;
+}
+
+.radio-row input[type="radio"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .vis0-icon-row {
+        grid-template-columns: repeat(16, 38px);
+        gap: 6px;
+    }
+
+    .vis0-icon-box {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 900px) {
+    .vis0-icon-row {
+        grid-template-columns: repeat(16, 32px);
+        gap: 5px;
+    }
+
+    .vis0-icon-box {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .vis0-dashboard-card,
+    .vis0-comparison-container {
+        padding: 20px;
+    }
+
+    .vis0-controls-row {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .vis0-chart-grid {
+        grid-template-columns: 60px 1fr;
+        row-gap: 25px;
+    }
+
+    .vis0-year-label {
+        font-size: 20px;
+    }
+
+    .vis0-icon-row {
+        grid-template-columns: repeat(8, 1fr);
+        gap: 4px;
+    }
+
+    .vis0-icon-box {
+        width: 100%;
+        height: 32px;
+        font-size: 16px;
+    }
+}
+/* Radio Column Layout */
+.radio-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.radio-col label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+}
+
+.radio-col input[type='radio'] {
+    cursor: pointer;
+}

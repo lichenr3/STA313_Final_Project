@@ -1,7 +1,7 @@
 (function () {
     // 配置
-    const targetChartId = 'vis2-chart-main';
-    const chartConfig = config_htmlwidget_523a716e2cfe1cabd60a;
+    const targetChartId = 'htmlwidget-1cd56ae51ed08c944d05';
+    const chartConfig = config_htmlwidget_1cd56ae51ed08c944d05;
     const chartData = chartConfig.data;
 
     // 1. 初始化集合与数据缓存

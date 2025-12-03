@@ -2,12 +2,12 @@
 
 // CMA metadata
 const CMA_METADATA = {
-  '535': { name: 'Toronto', color: '#e53935', colorLight: '#ffcdd2' },
-  '462': { name: 'Montreal', color: '#43a047', colorLight: '#c8e6c9' },
-  '505': { name: 'Ottawa', color: '#1e88e5', colorLight: '#bbdefb' },
-  '933': { name: 'Vancouver', color: '#fb8c00', colorLight: '#ffe0b2' },
-  '825': { name: 'Calgary', color: '#8e24aa', colorLight: '#e1bee7' },
-  '835': { name: 'Edmonton', color: '#00acc1', colorLight: '#b2ebf2' }
+  '535': { name: 'Toronto', color: '#702040', colorLight: '#8D3B55' },
+  '462': { name: 'Montreal', color: '#954050', colorLight: '#B0606F' },
+  '505': { name: 'Ottawa', color: '#CC7A75', colorLight: '#E09B97' },
+  '933': { name: 'Vancouver', color: '#E29886', colorLight: '#F0B8AA' },
+  '825': { name: 'Calgary', color: '#E9BFB1', colorLight: '#F5D6CC' },
+  '835': { name: 'Edmonton', color: '#EFE6DE', colorLight: '#F9F3EF' }
 };
 
 // Essential worker NAICS codes mapping
@@ -31,14 +31,14 @@ const MODE_CATEGORIES = {
 const MODE_ORDER = ['Car, driver', 'Car, passenger', 'Public transit', 'Walk', 'Bicycle', 'Motorcycle', 'Taxicab', 'Other method'];
 
 const MODE_COLORS = {
-  'Car, driver': '#e53935',
-  'Car, passenger': '#ef5350',
-  'Public transit': '#43a047',
-  'Walk': '#1e88e5',
-  'Bicycle': '#66bb6a',
-  'Motorcycle': '#757575',
-  'Taxicab': '#9e9e9e',
-  'Other method': '#bdbdbd'
+  'Car, driver': '#702040',      // Darkest
+  'Car, passenger': '#954050',
+  'Public transit': '#CC7A75',
+  'Walk': '#E29886',
+  'Bicycle': '#E9BFB1',
+  'Motorcycle': '#EFE6DE',       // Lightest
+  'Taxicab': '#EFE6DE',
+  'Other method': '#EFE6DE'
 };
 
 // Color scales

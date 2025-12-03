@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Select both sections AND individual visualization containers with data-controls
     const sections = document.querySelectorAll('section[data-controls]');
+    const visualizations = document.querySelectorAll('[data-controls]:not(section)');
+    const allObservableElements = [...sections, ...visualizations];
+    
     const controls = document.querySelectorAll('.control-section');
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -37,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Scroll Observer Logic
     const observerOptions = {
         root: null,
-        rootMargin: '-40% 0px -40% 0px', // Trigger when the section is in the middle of the screen
+        rootMargin: '-40% 0px -40% 0px', // Trigger when the element is in the middle of the screen
         threshold: 0
     };
 
@@ -60,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    sections.forEach(section => {
-        observer.observe(section);
+    allObservableElements.forEach(element => {
+        observer.observe(element);
     });
 
     function activateControls(controlId) {
@@ -83,5 +87,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // but sidebar is hidden.
     // Actually, the observer will trigger for the first section in view.
     // But let's set initial state just in case.
-    // activateControls('vis0-controls'); // Let observer handle it
+    // activateControls('vis0-icon-controls'); // Let observer handle it
 });

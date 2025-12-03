@@ -10,7 +10,9 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/vis0.css">
   <link rel="stylesheet" href="css/vis1.css">
   <link rel="stylesheet" href="css/vis2.css">
 </head>
@@ -25,10 +27,43 @@
 
     <aside id="sidebar">
 
-      <div id="vis0-controls" class="control-section active">
-        <h3>Section 1: Macro Context</h3>
-        <p class="helper-text">Options to filter the general remote work trends.</p>
-        <p>[Placeholder: Filter Controls for General Context]</p>
+      <div id="vis0-icon-controls" class="control-section active">
+        <h3>Icon Chart: Workforce Distribution</h3>
+        <p class="helper-text">Select a region to view commute mode composition.</p>
+
+        <div class="control-group">
+          <label for="vis0-icon-city-selector" class="vis0-control-label">Select Region</label>
+          <select id="vis0-icon-city-selector" class="vis0-select">
+            <option value="All">All Regions (Aggregate)</option>
+            <option value="Toronto">Toronto</option>
+            <option value="Montreal">Montréal</option>
+            <option value="Ottawa">Ottawa-Gatineau</option>
+            <option value="Vancouver">Vancouver</option>
+            <option value="Calgary">Calgary</option>
+            <option value="Edmonton">Edmonton</option>
+          </select>
+        </div>
+
+        <div class="info-panel" id="vis0-icon-stats-panel" style="margin-top: 15px;">
+          <h4>Region Statistics</h4>
+          <div id="vis0-icon-stats-content">
+            <p style="color: #999; font-size: 0.9em;">Select a region to see statistics</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="vis0-comparison-controls" class="control-section">
+        <h3>Comparison Chart: City Rankings</h3>
+        <p class="helper-text">Sort cities by different metrics.</p>
+
+        <div class="control-group">
+          <label for="vis0-sort-selector" class="vis0-control-label">Sort By</label>
+          <select id="vis0-sort-selector" class="vis0-select">
+            <option value="transit">By Transit Decline</option>
+            <option value="wfh">By WFH Growth</option>
+            <option value="population">By Population</option>
+          </select>
+        </div>
       </div>
 
       <div id="vis1-pie-controls" class="control-section">
@@ -156,7 +191,7 @@
 
     <main id="main-content">
 
-      <section id="intro" data-controls="vis0-controls">
+      <section id="intro" data-controls="vis0-icon-controls">
         <header class="article-header">
           <h1>[Placeholder: Main Project Title]</h1>
           <p class="subtitle">[Placeholder: A catchy subtitle summarizing the core conflict or question]</p>
@@ -173,7 +208,7 @@
         </div>
       </section>
 
-      <section id="vis0-section" data-controls="vis0-controls">
+      <section id="vis0-section">
         <div class="narrative-text">
           <h2>1. The Context: [Placeholder Topic Name]</h2>
           <p>
@@ -182,17 +217,62 @@
           </p>
         </div>
 
-        <div class="chart-container-wrapper" style="height: 600px;">
-          <div id="vis0-container"
-            style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border: 2px dashed #ccc;">
-            <p style="color: #666; font-size: 1.2em;">[Vis 0: Placeholder for General Trend Chart]</p>
+        <!-- Icon Chart -->
+        <div class="vis0-dashboard-card" data-controls="vis0-icon-controls">
+          <h3>The Commuter Shift: Composition & Scale</h3>
+
+          <div class="vis0-chart-grid">
+            <div class="vis0-year-label">2016</div>
+            <div class="vis0-icon-row" id="vis0-icon-row-2016"></div>
+
+            <div class="vis0-year-label">2021</div>
+            <div class="vis0-icon-row" id="vis0-icon-row-2021"></div>
           </div>
+
+          <p class="vis0-subtitle" id="vis0-icon-subtitle"
+            style="margin-top: 30px; margin-bottom: 15px; text-align: center;"></p>
+
+          <div class="vis0-legend" style="margin-top: 0; padding-top: 15px;">
+            <div class="vis0-legend-item">
+              <div class="vis0-legend-dot bg-car"></div> Private Vehicle
+            </div>
+            <div class="vis0-legend-item">
+              <div class="vis0-legend-dot bg-transit"></div> Public Transit
+            </div>
+            <div class="vis0-legend-item">
+              <div class="vis0-legend-dot bg-active"></div> Active / Other
+            </div>
+            <div class="vis0-legend-item">
+              <div class="vis0-legend-dot bg-wfh"></div> Work From Home
+            </div>
+          </div>
+        </div>
+
+        <div class="narrative-text" style="margin-top: 40px;">
+          <h3>[Placeholder: Subsection Title]</h3>
+          <p>
+            [Placeholder: Transition text explaining the shift from general overview to specific comparison. Comment on
+            what the icon chart above shows and introduce the comparison chart below.]
+          </p>
+        </div>
+
+        <!-- Comparison Chart -->
+        <div class="vis0-comparison-container" data-controls="vis0-comparison-controls">
+          <h3>Toronto's Disproportionate Shift</h3>
+          <p class="vis0-comparison-subtitle">
+            Comparing the <strong>Transit Collapse</strong> vs. the <strong>Remote Work Surge</strong> across 6
+            CMAs.<br>
+            The scale of the transit drop in Toronto is magnified by its massive population.
+          </p>
+          <div id="vis0-comparison-chart" style="text-align:center;"></div>
+          <p class="vis0-comparison-note">Note: Transit decline correlates with WFH growth, but also reflects shifts to
+            private vehicle use.</p>
         </div>
 
         <div class="narrative-text">
           <p>
-            [Placeholder: Transition/Observation. Comment on what the chart above shows. "As we can see, while many
-            stayed home, a specific group did not..."]
+            [Placeholder: Transition/Observation. Comment on what the charts above show. "As we can see, while many
+            stayed home, a specific group did not..." Lead into the next section about demographics.]
           </p>
         </div>
       </section>
@@ -261,20 +341,21 @@
         </div>
 
         <div class="chart-container-wrapper">
-          <div id="vis2-chart-main" class="chart-container" style="height: 500px; box-shadow: none; padding: 0;"></div>
+          <div id="htmlwidget-1cd56ae51ed08c944d05" class="chart-container"
+            style="height: 500px; box-shadow: none; padding: 0;"></div>
         </div>
 
         <div class="narrative-text" style="margin-top: 40px;">
-          <h3>Emissions vs. Commute Efficiency</h3>
+          <h3>National Transport GHG Emissions</h3>
           <p>
-            [Placeholder: Deep dive text for the scatter plot. Explain outliers (e.g., Why is Calgary different from
-            Montreal?). Discuss the "efficiency" of moving these essential workers.]
+            [Placeholder: Deep dive text for the emissions plot. Explain the trends in national transport emissions over
+            time, highlighting the significant drop in 2020 due to the pandemic and the subsequent recovery.]
           </p>
         </div>
 
         <div class="chart-container-wrapper">
           <div class="scatter-box">
-            <div id="vis2-chart-scatter" class="chart-container-small"
+            <div id="htmlwidget-6d77d7560fec3a86df08" class="chart-container-small"
               style="height: 500px; box-shadow: none; padding: 0;"></div>
           </div>
         </div>
@@ -301,25 +382,28 @@
     </main>
   </div>
 
+  <!-- Vis0 Tooltips -->
+  <div id="vis0-icon-tooltip"></div>
+
   <!-- 侧边栏切换功能 -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const toggleBtn = document.getElementById('sidebar-toggle');
       const appContainer = document.getElementById('app-container');
-      
+
       // 从 localStorage 读取侧边栏状态
       const sidebarHidden = localStorage.getItem('sidebarHidden') === 'true';
       if (sidebarHidden) {
         appContainer.classList.add('sidebar-hidden');
       }
-      
-      toggleBtn.addEventListener('click', function() {
+
+      toggleBtn.addEventListener('click', function () {
         appContainer.classList.toggle('sidebar-hidden');
-        
+
         // 保存状态到 localStorage
         const isHidden = appContainer.classList.contains('sidebar-hidden');
         localStorage.setItem('sidebarHidden', isHidden);
-        
+
         // 触发窗口 resize 事件，让图表重新调整大小
         setTimeout(() => {
           window.dispatchEvent(new Event('resize'));
@@ -330,6 +414,8 @@
 
   <script src="js/stateManager.js"></script>
   <script src="js/scrollManager.js"></script>
+  <script src="js/vis0/vis0_icons.js"></script>
+  <script src="js/vis0/vis0_comparison.js"></script>
   <script src="js/vis1/utils.js"></script>
   <script src="js/vis1/dataLoaderPrecomputed.js"></script>
   <script src="js/vis1/dataProcessorPrecomputed.js"></script>
