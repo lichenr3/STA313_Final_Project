@@ -106,7 +106,10 @@
         });
     }
 
-    // 5. 核心逻辑：更新图表 + 表格
+    // 5. 保存原始配置
+    let originalConfig = null;
+
+    // 6. 核心逻辑：更新图表 + 表格
     function updateAll() {
         const modeSelect = document.getElementById('vis2-mode-select');
         const regionSelect = document.getElementById('vis2-CMA-select');
@@ -116,32 +119,134 @@
         const selectedMode = modeSelect.value;
         const selectedRegion = regionSelect.value;
 
-        // --- A. 更新图表透明度 ---
-        const newOpacities = chartData.map(trace => {
-            if (!trace._custom_mode || !trace._custom_region) return 1;
-            const modeMatch = (selectedMode === 'all') || (trace._custom_mode === selectedMode);
-            const regionMatch = (selectedRegion === 'all') || (trace._custom_region === selectedRegion);
-            return (modeMatch && regionMatch) ? 1 : 0.1;
-        });
+        // --- A. 更新图表 ---
+        if (selectedRegion === 'all') {
+            // 恢复原始多面板视图
+            if (originalConfig === null) {
+                // 第一次，保存原始配置
+                originalConfig = JSON.parse(JSON.stringify(chartConfig));
+            }
+            
+            // 使用透明度过滤模式
+            const newOpacities = chartData.map(trace => {
+                if (!trace._custom_mode || !trace._custom_region) return 1;
+                const modeMatch = (selectedMode === 'all') || (trace._custom_mode === selectedMode);
+                return modeMatch ? 1 : 0.3;
+            });
 
-        Plotly.restyle(targetChartId, {
-            'marker.opacity': newOpacities,
-            'opacity': newOpacities
-        });
+            // 如果当前不是原始布局，重新创建
+            const chartEl = document.getElementById(targetChartId);
+            if (chartEl && chartEl._fullLayout && chartEl._fullLayout.annotations.length !== 9) {
+                Plotly.newPlot(targetChartId, originalConfig.data, originalConfig.layout, originalConfig.config);
+            }
+            
+            // 应用透明度
+            Plotly.restyle(targetChartId, {
+                'visible': true,
+                'marker.opacity': newOpacities,
+                'opacity': newOpacities
+            });
+
+        } else {
+            // 创建单区域视图：完全重建图表
+            if (originalConfig === null) {
+                originalConfig = JSON.parse(JSON.stringify(chartConfig));
+            }
+
+            // 过滤出选定区域的traces
+            const filteredTraces = chartData
+                .filter(trace => trace._custom_region === selectedRegion)
+                .map(trace => {
+                    // 深拷贝trace并修改axis引用
+                    const newTrace = JSON.parse(JSON.stringify(trace));
+                    newTrace.xaxis = 'x';
+                    newTrace.yaxis = 'y';
+                    
+                    // 根据mode过滤设置透明度
+                    const modeMatch = (selectedMode === 'all') || (trace._custom_mode === selectedMode);
+                    if (newTrace.marker) {
+                        newTrace.marker.opacity = modeMatch ? 1 : 0.3;
+                    }
+                    newTrace.opacity = modeMatch ? 1 : 0.3;
+                    
+                    // 保留自定义属性
+                    newTrace._custom_region = trace._custom_region;
+                    newTrace._custom_mode = trace._custom_mode;
+                    
+                    return newTrace;
+                });
+
+            // 创建单面板布局
+            const singleLayout = {
+                margin: originalConfig.layout.margin,
+                font: originalConfig.layout.font,
+                xaxis: {
+                    domain: [0, 1],
+                    automargin: true,
+                    type: 'linear',
+                    autorange: false,
+                    range: [-0.05, 1.05],
+                    tickmode: 'array',
+                    ticktext: ['0%', '25%', '50%', '75%', '100%'],
+                    tickvals: [0, 0.25, 0.5, 0.75, 1],
+                    showticklabels: true,
+                    showline: false,
+                    showgrid: false,
+                    zeroline: false,
+                    title: 'Share of commuters'
+                },
+                yaxis: {
+                    domain: [0, 1],
+                    automargin: true,
+                    type: 'linear',
+                    autorange: false,
+                    range: [0.4, 2.6],
+                    tickmode: 'array',
+                    ticktext: ['2021', '2016'],
+                    tickvals: [1, 2],
+                    showticklabels: true,
+                    showline: false,
+                    showgrid: true,
+                    gridcolor: 'rgba(235,235,235,1)',
+                    zeroline: false,
+                    title: 'Census year'
+                },
+                annotations: [{
+                    text: selectedRegion,
+                    x: 0.5,
+                    y: 1,
+                    showarrow: false,
+                    font: {
+                        color: 'rgba(26,26,26,1)',
+                        size: 14
+                    },
+                    xref: 'paper',
+                    yref: 'paper',
+                    xanchor: 'center',
+                    yanchor: 'bottom'
+                }],
+                showlegend: true,
+                legend: originalConfig.layout.legend,
+                hovermode: 'closest',
+                barmode: 'relative',
+                dragmode: 'zoom'
+            };
+
+            // 重新创建图表
+            Plotly.newPlot(targetChartId, filteredTraces, singleLayout, originalConfig.config);
+        }
 
         // --- B. 更新表格数据 ---
-        // 筛选符合条件的行
         const filteredTableData = summaryDataCache.filter(item => {
             const modeMatch = (selectedMode === 'all') || (item.mode === selectedMode);
             const regionMatch = (selectedRegion === 'all') || (item.region === selectedRegion);
             return modeMatch && regionMatch;
         });
 
-        // 渲染表格
         renderTable(filteredTableData);
     }
 
-    // 6. 绑定事件
+    // 7. 绑定事件
     const modeSelect = document.getElementById('vis2-mode-select');
     const regionSelect = document.getElementById('vis2-CMA-select');
     const resetBtn = document.getElementById('vis2-reset-btn');
@@ -172,7 +277,7 @@
         });
     }
 
-    // 7. 订阅全局状态
+    // 8. 订阅全局状态
     if (typeof globalStateManager !== 'undefined') {
         globalStateManager.subscribe((detail) => {
             // Ignore updates from self to avoid loops

@@ -31,14 +31,14 @@ const MODE_CATEGORIES = {
 const MODE_ORDER = ['Car, driver', 'Car, passenger', 'Public transit', 'Walk', 'Bicycle', 'Motorcycle', 'Taxicab', 'Other method'];
 
 const MODE_COLORS = {
-  'Car, driver': '#702040',      // Darkest
-  'Car, passenger': '#954050',
-  'Public transit': '#CC7A75',
-  'Walk': '#E29886',
-  'Bicycle': '#E9BFB1',
-  'Motorcycle': '#EFE6DE',       // Lightest
-  'Taxicab': '#EFE6DE',
-  'Other method': '#EFE6DE'
+  'Car, driver': '#702040',      // Darkest red-brown
+  'Car, passenger': '#8D3B55',   // Dark red-brown
+  'Public transit': '#B0606F',   // Medium red-brown
+  'Walk': '#CC7A75',             // Medium-light red-brown
+  'Bicycle': '#E09B97',          // Light red-brown
+  'Motorcycle': '#E9BFB1',       // Very light red-brown
+  'Taxicab': '#F0B8AA',          // Pale red-brown
+  'Other method': '#F5D6CC'      // Lightest red-brown
 };
 
 // Color scales

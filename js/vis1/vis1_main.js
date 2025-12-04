@@ -105,10 +105,8 @@ class App {
       height: 500
     });
 
-    this.barChart = new BarChart('#bar-chart-container', {
-      width: 900,
-      height: 450
-    });
+    // Bar chart will auto-calculate dimensions from container
+    this.barChart = new BarChart('#bar-chart-container');
 
     console.log('Charts initialized');
   }

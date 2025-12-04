@@ -3,21 +3,57 @@
 class BarChart {
   constructor(containerId, options = {}) {
     this.container = d3.select(containerId);
+    this.containerId = containerId;
     this.data = [];
     this.displayMode = 'percentage'; // 'percentage' or 'actual'
     this.showNetChange = false;
 
-    // Chart dimensions
-    this.width = options.width || 900;
-    this.height = options.height || 450;
+    // Chart dimensions - will be calculated based on container
     this.margin = options.margin || { top: 60, right: 100, bottom: 140, left: 80 };
-
-    this.innerWidth = this.width - this.margin.left - this.margin.right;
-    this.innerHeight = this.height - this.margin.top - this.margin.bottom;
 
     this.tooltip = new Tooltip();
 
+    this.calculateDimensions();
     this.init();
+    
+    // Add resize listener
+    window.addEventListener('resize', () => {
+      this.handleResize();
+    });
+  }
+  
+  calculateDimensions() {
+    // Get container dimensions
+    const containerNode = this.container.node();
+    const containerWidth = containerNode ? containerNode.getBoundingClientRect().width : 900;
+    const containerHeight = containerNode ? containerNode.getBoundingClientRect().height : 500;
+    
+    // Set dimensions based on container, with reasonable limits
+    this.width = Math.min(Math.max(containerWidth - 40, 600), 1200);
+    this.height = Math.min(Math.max(containerHeight - 40, 400), 600);
+    
+    this.innerWidth = this.width - this.margin.left - this.margin.right;
+    this.innerHeight = this.height - this.margin.top - this.margin.bottom;
+  }
+  
+  handleResize() {
+    // Debounce resize
+    clearTimeout(this.resizeTimer);
+    this.resizeTimer = setTimeout(() => {
+      const oldWidth = this.width;
+      const oldHeight = this.height;
+      
+      this.calculateDimensions();
+      
+      // Only re-render if dimensions changed significantly
+      if (Math.abs(this.width - oldWidth) > 50 || Math.abs(this.height - oldHeight) > 50) {
+        this.init();
+        if (this.data && this.data.length > 0) {
+          // Re-render with current data
+          this.redraw();
+        }
+      }
+    }, 250);
   }
 
   init() {
@@ -73,6 +109,11 @@ class BarChart {
       .style('fill', '#666')
       .text('Commute Mode');
 
+    // Create legend group
+    this.legendGroup = this.svg.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${this.width - this.margin.right + 10}, ${this.margin.top})`);
+
     // Create scales
     this.xScale = d3.scaleBand()
       .range([0, this.innerWidth])
@@ -107,6 +148,10 @@ class BarChart {
 
     this.displayMode = displayMode;
     this.showNetChange = showNetChange;
+    
+    // Save current state for redraw
+    this.currentAggregatedData = aggregatedData;
+    this.currentOptions = options;
 
     // Prepare data based on options
     let chartData;
@@ -116,40 +161,111 @@ class BarChart {
       chartData = this.prepareNetChangeData(aggregatedData, showPublic, showPrivate, showOther);
       this.updateTitle('Net Change in Commute Mode (2021 - 2016)');
       this.updateYLabel('Percentage Point Change (%)');
-    } else {
-      // Show percentage or actual counts
-      const yearData = year === '2016'
-        ? (displayMode === 'percentage' ? aggregatedData.percentages2016 : aggregatedData.counts2016)
-        : (displayMode === 'percentage' ? aggregatedData.percentages2021 : aggregatedData.counts2021);
-
-      chartData = this.prepareRegularData(yearData, showPublic, showPrivate, showOther);
-      this.updateTitle(`Commute Mode Distribution (${year})`);
-      this.updateYLabel(displayMode === 'percentage' ? 'Percentage (%)' : 'Number of Workers');
-    }
-
-    // Update scales
-    this.xScale.domain(chartData.map(d => d.mode));
-
-    const yExtent = d3.extent(chartData, d => d.value);
-    const yMax = showNetChange
-      ? Math.max(Math.abs(yExtent[0]), Math.abs(yExtent[1])) * 1.1
-      : yExtent[1] * 1.1;
-    const yMin = showNetChange ? -yMax : 0;
-
-    this.yScale.domain([yMin, yMax]);
-
-    // Update axes
-    this.updateAxes();
-
-    // Draw bars
-    this.drawBars(chartData);
-
-    // Draw zero line if showing net change
-    if (showNetChange) {
+      
+      // Update scales for single bars
+      this.xScale.domain(chartData.map(d => d.mode));
+      const yExtent = d3.extent(chartData, d => d.value);
+      const yMax = Math.max(Math.abs(yExtent[0]), Math.abs(yExtent[1])) * 1.1;
+      this.yScale.domain([-yMax, yMax]);
+      
+      // Update axes and draw
+      this.updateAxes();
+      this.drawBars(chartData);
       this.drawZeroLine();
+      this.hideLegend();
     } else {
+      // Show grouped bars (2016 vs 2021)
+      chartData = this.prepareGroupedData(aggregatedData, displayMode, showPublic, showPrivate, showOther);
+      this.updateTitle('Commute Mode Distribution (2016 vs 2021)');
+      this.updateYLabel(displayMode === 'percentage' ? 'Percentage (%)' : 'Number of Workers');
+      
+      // Update scales for grouped bars
+      this.xScale.domain(chartData.map(d => d.mode));
+      
+      // Create sub-scale for years within each mode
+      this.xSubScale = d3.scaleBand()
+        .domain(['2016', '2021'])
+        .range([0, this.xScale.bandwidth()])
+        .padding(0.05);
+      
+      const allValues = chartData.flatMap(d => [d.value2016, d.value2021]);
+      const yMax = d3.max(allValues) * 1.1;
+      this.yScale.domain([0, yMax]);
+      
+      // Update axes and draw
+      this.updateAxes();
+      this.drawGroupedBars(chartData);
       this.g.selectAll('.zero-line').remove();
+      this.showLegend();
     }
+  }
+
+  showLegend() {
+    // Clear existing legend
+    this.legendGroup.selectAll('*').remove();
+
+    // Add title for legend
+    this.legendGroup.append('text')
+      .attr('x', 0)
+      .attr('y', -5)
+      .style('font-size', '11px')
+      .style('font-weight', 'bold')
+      .style('fill', '#666')
+      .text('Year:');
+
+    // Add 2016 legend item with pattern showing lighter shade
+    const legend2016 = this.legendGroup.append('g')
+      .attr('transform', 'translate(0, 10)');
+    
+    // Create a small gradient bar showing lighter color
+    legend2016.append('rect')
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', '#999')  // Generic gray to represent "lighter"
+      .attr('opacity', 0.7)
+      .attr('rx', 2);
+    
+    legend2016.append('text')
+      .attr('x', 20)
+      .attr('y', 12)
+      .style('font-size', '11px')
+      .style('fill', '#333')
+      .text('2016 (lighter)');
+
+    // Add 2021 legend item with pattern showing darker shade
+    const legend2021 = this.legendGroup.append('g')
+      .attr('transform', 'translate(0, 32)');
+    
+    legend2021.append('rect')
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', '#666')  // Darker gray to represent "darker"
+      .attr('opacity', 1)
+      .attr('rx', 2);
+    
+    legend2021.append('text')
+      .attr('x', 20)
+      .attr('y', 12)
+      .style('font-size', '11px')
+      .style('fill', '#333')
+      .text('2021 (darker)');
+    
+    // Add note about colors
+    this.legendGroup.append('text')
+      .attr('x', 0)
+      .attr('y', 60)
+      .style('font-size', '9px')
+      .style('fill', '#888')
+      .style('font-style', 'italic')
+      .text('Each mode has')
+      .append('tspan')
+      .attr('x', 0)
+      .attr('dy', 11)
+      .text('its own color');
+  }
+
+  hideLegend() {
+    this.legendGroup.selectAll('*').remove();
   }
 
   prepareRegularData(data, showPublic, showPrivate, showOther) {
@@ -175,11 +291,42 @@ class BarChart {
     return chartData;
   }
 
+  prepareGroupedData(aggregatedData, displayMode, showPublic, showPrivate, showOther) {
+    const data2016 = displayMode === 'percentage' ? aggregatedData.percentages2016 : aggregatedData.counts2016;
+    const data2021 = displayMode === 'percentage' ? aggregatedData.percentages2021 : aggregatedData.counts2021;
+    
+    // 使用固定顺序
+    const orderedModes = typeof MODE_ORDER !== 'undefined' ? MODE_ORDER : Object.keys(data2016);
+    
+    let chartData = orderedModes
+      .filter(mode => mode in data2016 && mode in data2021)
+      .map(mode => ({
+        mode,
+        value2016: data2016[mode] || 0,
+        value2021: data2021[mode] || 0,
+        category: getModeCategory(mode),
+        color: getModeColor(mode)
+      }));
+
+    // Filter based on options
+    chartData = chartData.filter(d => {
+      if (d.category === 'sustainable' && !showPublic) return false;
+      if (d.category === 'car' && !showPrivate) return false;
+      if (d.category === 'other' && !showOther) return false;
+      return true;
+    });
+
+    // Sort by 2021 value descending (most recent data)
+    chartData.sort((a, b) => b.value2021 - a.value2021);
+
+    return chartData;
+  }
+
   prepareNetChangeData(aggregatedData, showPublic, showPrivate, showOther) {
     // 使用固定顺序
     const orderedModes = typeof MODE_ORDER !== 'undefined' ? MODE_ORDER : Object.keys(aggregatedData.netChange);
 
-    return orderedModes
+    const chartData = orderedModes
       .filter(mode => mode in aggregatedData.netChange)
       .map(mode => ({
         mode,
@@ -193,6 +340,11 @@ class BarChart {
         if (d.category === 'other' && !showOther) return false;
         return true;
       });
+    
+    // Sort by absolute value descending (biggest changes first)
+    chartData.sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+    
+    return chartData;
   }
 
   updateAxes() {
@@ -242,6 +394,9 @@ class BarChart {
   }
 
   drawBars(data) {
+    // Clear grouped bars if they exist
+    this.barsGroup.selectAll('.bar-group').remove();
+    
     // Bind data
     const bars = this.barsGroup.selectAll('.bar')
       .data(data, d => d.mode);
@@ -285,6 +440,55 @@ class BarChart {
       .remove();
   }
 
+  drawGroupedBars(data) {
+    // Clear existing bars
+    this.barsGroup.selectAll('.bar').remove();
+    this.barsGroup.selectAll('.bar-group').remove();
+
+    // Create groups for each mode
+    const barGroups = this.barsGroup.selectAll('.bar-group')
+      .data(data, d => d.mode)
+      .join('g')
+      .attr('class', 'bar-group')
+      .attr('transform', d => `translate(${this.xScale(d.mode)}, 0)`);
+
+    // Draw 2016 bars
+    barGroups.append('rect')
+      .attr('class', 'bar bar-2016')
+      .attr('x', this.xSubScale('2016'))
+      .attr('width', this.xSubScale.bandwidth())
+      .attr('y', this.yScale(0))
+      .attr('height', 0)
+      .attr('fill', d => d.color)
+      .attr('opacity', 0.7)
+      .style('cursor', 'pointer')
+      .on('mouseover', (event, d) => this.handleGroupedMouseOver(event, d, '2016'))
+      .on('mouseout', (event, d) => this.handleMouseOut(event, d))
+      .transition()
+      .duration(transitionDuration())
+      .ease(easeFunction())
+      .attr('y', d => this.yScale(d.value2016))
+      .attr('height', d => this.yScale(0) - this.yScale(d.value2016));
+
+    // Draw 2021 bars
+    barGroups.append('rect')
+      .attr('class', 'bar bar-2021')
+      .attr('x', this.xSubScale('2021'))
+      .attr('width', this.xSubScale.bandwidth())
+      .attr('y', this.yScale(0))
+      .attr('height', 0)
+      .attr('fill', d => d.color)
+      .attr('opacity', 1)
+      .style('cursor', 'pointer')
+      .on('mouseover', (event, d) => this.handleGroupedMouseOver(event, d, '2021'))
+      .on('mouseout', (event, d) => this.handleMouseOut(event, d))
+      .transition()
+      .duration(transitionDuration())
+      .ease(easeFunction())
+      .attr('y', d => this.yScale(d.value2021))
+      .attr('height', d => this.yScale(0) - this.yScale(d.value2021));
+  }
+
   drawZeroLine() {
     // Remove existing zero line
     this.g.selectAll('.zero-line').remove();
@@ -323,12 +527,45 @@ class BarChart {
     this.tooltip.show(html, event);
   }
 
+  handleGroupedMouseOver(event, d, year) {
+    // Highlight bar
+    d3.select(event.currentTarget)
+      .transition()
+      .duration(200)
+      .style('stroke', '#333')
+      .style('stroke-width', '2px');
+
+    // Show tooltip
+    const value = year === '2016' ? d.value2016 : d.value2021;
+    const otherValue = year === '2016' ? d.value2021 : d.value2016;
+    const change = value - otherValue;
+    const changePercent = otherValue !== 0 ? (change / otherValue) * 100 : 0;
+    
+    let html = `<strong>${d.mode}</strong><br/>`;
+    html += `<span style="color: #666;">Year: ${year}</span><br/>`;
+    
+    if (this.displayMode === 'percentage') {
+      html += `<span style="color: ${d.color};">Percentage: ${formatPercent(value)}%</span><br/>`;
+      html += `<span style="color: ${change >= 0 ? '#43a047' : '#e53935'}; font-size: 0.9em;">`;
+      html += `Change: ${change >= 0 ? '+' : ''}${formatPercent(change)}pp</span>`;
+    } else {
+      html += `<span style="color: ${d.color};">Workers: ${formatNumber(Math.round(value))}</span><br/>`;
+      html += `<span style="color: ${change >= 0 ? '#43a047' : '#e53935'}; font-size: 0.9em;">`;
+      html += `Change: ${change >= 0 ? '+' : ''}${formatNumber(Math.round(change))} (${changePercent >= 0 ? '+' : ''}${formatPercent(changePercent)}%)</span>`;
+    }
+
+    this.tooltip.show(html, event);
+  }
+
   handleMouseOut(event, d) {
     // Restore bar
     d3.select(event.currentTarget)
       .transition()
       .duration(200)
-      .attr('opacity', 1);
+      .attr('opacity', function() {
+        return d3.select(this).classed('bar-2016') ? 0.7 : 1;
+      })
+      .style('stroke', 'none');
 
     // Hide tooltip
     this.tooltip.hide();
@@ -340,6 +577,13 @@ class BarChart {
 
   updateYLabel(text) {
     this.yLabel.text(text);
+  }
+
+  redraw() {
+    // Re-render with saved state
+    if (this.currentAggregatedData && this.currentOptions) {
+      this.update(this.currentAggregatedData, this.currentOptions);
+    }
   }
 
   resize(width, height) {
@@ -357,5 +601,6 @@ class BarChart {
   destroy() {
     this.tooltip.remove();
     this.container.html('');
+    window.removeEventListener('resize', this.handleResize);
   }
 }
