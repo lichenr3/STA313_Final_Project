@@ -25,8 +25,12 @@ class BarChart {
   calculateDimensions() {
     // Get container dimensions
     const containerNode = this.container.node();
-    const containerWidth = containerNode ? containerNode.getBoundingClientRect().width : 900;
-    const containerHeight = containerNode ? containerNode.getBoundingClientRect().height : 500;
+    let containerWidth = containerNode ? containerNode.getBoundingClientRect().width : 900;
+    let containerHeight = containerNode ? containerNode.getBoundingClientRect().height : 500;
+    
+    // If container is hidden or has 0 width, use default values
+    if (containerWidth < 100) containerWidth = 900;
+    if (containerHeight < 100) containerHeight = 500;
     
     // Set dimensions based on container, with reasonable limits
     this.width = Math.min(Math.max(containerWidth - 40, 600), 1200);
@@ -47,9 +51,9 @@ class BarChart {
       
       // Only re-render if dimensions changed significantly
       if (Math.abs(this.width - oldWidth) > 50 || Math.abs(this.height - oldHeight) > 50) {
-        this.init();
-        if (this.data && this.data.length > 0) {
-          // Re-render with current data
+        // Check if we have saved data before reinitializing
+        if (this.currentAggregatedData && this.currentOptions) {
+          this.init();
           this.redraw();
         }
       }

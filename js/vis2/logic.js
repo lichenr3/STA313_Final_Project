@@ -25,11 +25,11 @@
                 trace._custom_region = region;
                 trace._custom_mode = mode;
 
-                // --- 新增：提取表格所需数据 ---
-                // trace.y[0] 是 2016年数据, trace.y[1] 是 2021年数据
-                // 假设数据是小数 (如 0.71)，我们需要转成百分比
-                const val2016 = trace.y[0] || 0;
-                const val2021 = trace.y[1] || 0;
+                // --- 提取表格所需数据 ---
+                // trace.x数组: [val_2016, val_2021] (x[0]对应y=2即2016年, x[1]对应y=1即2021年)
+                // trace.y数组: [2, 1] (2=2016年, 1=2021年)
+                const val2016 = trace.x && trace.x[0] !== undefined ? trace.x[0] : 0;
+                const val2021 = trace.x && trace.x[1] !== undefined ? trace.x[1] : 0;
 
                 // 计算变化 (Percentage Points)
                 const changePP = (val2021 - val2016) * 100;
