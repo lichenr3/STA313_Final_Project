@@ -164,7 +164,13 @@ class BarChart {
       // Show net change
       chartData = this.prepareNetChangeData(aggregatedData, showPublic, showPrivate, showOther);
       this.updateTitle('Net Change in Commute Mode (2021 - 2016)');
-      this.updateYLabel('Percentage Point Change (%)');
+      
+      // 根据displayMode设置y轴标签
+      if (displayMode === 'percentage') {
+        this.updateYLabel('Percentage Point Change (%)');
+      } else {
+        this.updateYLabel('Change in Number of Workers');
+      }
       
       // Update scales for single bars
       this.xScale.domain(chartData.map(d => d.mode));
@@ -330,13 +336,18 @@ class BarChart {
     // 使用固定顺序
     const orderedModes = typeof MODE_ORDER !== 'undefined' ? MODE_ORDER : Object.keys(aggregatedData.netChange);
 
+    // 根据displayMode选择使用百分比变化或绝对数量变化
+    const changeData = this.displayMode === 'percentage' 
+      ? aggregatedData.netChange 
+      : aggregatedData.netChangeAbsolute;
+
     const chartData = orderedModes
-      .filter(mode => mode in aggregatedData.netChange)
+      .filter(mode => mode in changeData)
       .map(mode => ({
         mode,
-        value: aggregatedData.netChange[mode],
+        value: changeData[mode],
         category: getModeCategory(mode),
-        color: aggregatedData.netChange[mode] >= 0 ? '#43a047' : '#e53935'
+        color: changeData[mode] >= 0 ? '#43a047' : '#e53935'
       }))
       .filter(d => {
         if (d.category === 'sustainable' && !showPublic) return false;
@@ -382,7 +393,7 @@ class BarChart {
     const yAxis = d3.axisLeft(this.yScale)
       .ticks(8)
       .tickFormat(d => {
-        if (this.displayMode === 'percentage' || this.showNetChange) {
+        if (this.displayMode === 'percentage') {
           return `${d}%`;
         } else {
           return formatNumber(d);
@@ -521,7 +532,11 @@ class BarChart {
 
     if (this.showNetChange) {
       html += `<span style="color: ${d.value >= 0 ? '#43a047' : '#e53935'};">`;
-      html += `Net Change: ${d.value >= 0 ? '+' : ''}${formatPercent(d.value)}%</span>`;
+      if (this.displayMode === 'percentage') {
+        html += `Net Change: ${d.value >= 0 ? '+' : ''}${formatPercent(d.value)}%</span>`;
+      } else {
+        html += `Net Change: ${d.value >= 0 ? '+' : ''}${formatNumber(Math.round(d.value))} workers</span>`;
+      }
     } else if (this.displayMode === 'percentage') {
       html += `<span style="color: #8e24aa;">Percentage: ${formatPercent(d.value)}%</span>`;
     } else {

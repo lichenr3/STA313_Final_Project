@@ -190,9 +190,31 @@ function getModeColor(mode) {
   }
 }
 
-// Get CMA name
+// Get CMA name from code
 function getCMAName(cmaCode) {
   return CMA_METADATA[cmaCode]?.name || `CMA ${cmaCode}`;
+}
+
+// Get CMA code from name (reverse lookup)
+function getCMACode(cmaName) {
+  // 处理特殊值
+  if (cmaName === 'overview' || cmaName === 'all' || cmaName === 'All') {
+    return 'overview';
+  }
+  
+  // 标准化名称（移除空格和特殊字符，转为小写）
+  const normalizedInput = cmaName.toLowerCase().replace(/[^a-z]/g, '');
+  
+  // 遍历查找匹配的CMA代码
+  for (const [code, metadata] of Object.entries(CMA_METADATA)) {
+    const normalizedMetaName = metadata.name.toLowerCase().replace(/[^a-z]/g, '');
+    if (normalizedMetaName === normalizedInput) {
+      return code;
+    }
+  }
+  
+  // 如果找不到，返回原值（可能已经是代码）
+  return cmaName;
 }
 
 // Get CMA color

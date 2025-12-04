@@ -9,7 +9,257 @@ Plotly.newPlot(
 );
 
 // --- 图表 htmlwidget-6d77d7560fec3a86df08 ---
-const config_htmlwidget_6d77d7560fec3a86df08 = {"data": [{"x": [2010, null, 2011, null, 2012, null, 2013, null, 2014, null, 2015, null, 2016, null, 2017, null, 2018, null, 2019, null, 2020, null, 2021, null, 2022, null, 2023], "y": [728, null, 738, null, 741, null, 750, null, 747, null, 742, null, 725, null, 738, null, 747, null, 747, null, 682, null, 694, null, 700, null, 694], "text": ["Year: 2010<br>Emissions: 728 Mt CO\u2082e<br>Baseline year", null, "Year: 2011<br>Emissions: 738 Mt CO\u2082e<br>+10.0 Mt (+1.4% vs previous year)", null, "Year: 2012<br>Emissions: 741 Mt CO\u2082e<br>+3.0 Mt (+0.4% vs previous year)", null, "Year: 2013<br>Emissions: 750 Mt CO\u2082e<br>+9.0 Mt (+1.2% vs previous year)", null, "Year: 2014<br>Emissions: 747 Mt CO\u2082e<br>-3.0 Mt (-0.4% vs previous year)", null, "Year: 2015<br>Emissions: 742 Mt CO\u2082e<br>-5.0 Mt (-0.7% vs previous year)", null, "Year: 2016<br>Emissions: 725 Mt CO\u2082e<br>-17.0 Mt (-2.3% vs previous year)", null, "Year: 2017<br>Emissions: 738 Mt CO\u2082e<br>+13.0 Mt (+1.8% vs previous year)", null, "Year: 2018<br>Emissions: 747 Mt CO\u2082e<br>+9.0 Mt (+1.2% vs previous year)", null, "Year: 2019<br>Emissions: 747 Mt CO\u2082e<br>+0.0 Mt (+0.0% vs previous year)", null, "Year: 2020<br>Emissions: 682 Mt CO\u2082e<br>-65.0 Mt (-8.7% vs previous year)", null, "Year: 2021<br>Emissions: 694 Mt CO\u2082e<br>+12.0 Mt (+1.8% vs previous year)", null, "Year: 2022<br>Emissions: 700 Mt CO\u2082e<br>+6.0 Mt (+0.9% vs previous year)", null, "Year: 2023<br>Emissions: 694 Mt CO\u2082e<br>-6.0 Mt (-0.9% vs previous year)"], "type": "scatter", "mode": "lines", "line": {"width": 3.401574803149607, "color": "rgba(102,102,102,1)", "dash": "solid"}, "hoveron": "points", "showlegend": false, "xaxis": "x", "yaxis": "y", "hoverinfo": "text", "frame": null}, {"x": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023], "y": [728, 738, 741, 750, 747, 742, 725, 738, 747, 747, 682, 694, 700, 694], "text": ["Year: 2010<br>Emissions: 728 Mt CO\u2082e<br>Baseline year", "Year: 2011<br>Emissions: 738 Mt CO\u2082e<br>+10.0 Mt (+1.4% vs previous year)", "Year: 2012<br>Emissions: 741 Mt CO\u2082e<br>+3.0 Mt (+0.4% vs previous year)", "Year: 2013<br>Emissions: 750 Mt CO\u2082e<br>+9.0 Mt (+1.2% vs previous year)", "Year: 2014<br>Emissions: 747 Mt CO\u2082e<br>-3.0 Mt (-0.4% vs previous year)", "Year: 2015<br>Emissions: 742 Mt CO\u2082e<br>-5.0 Mt (-0.7% vs previous year)", "Year: 2016<br>Emissions: 725 Mt CO\u2082e<br>-17.0 Mt (-2.3% vs previous year)", "Year: 2017<br>Emissions: 738 Mt CO\u2082e<br>+13.0 Mt (+1.8% vs previous year)", "Year: 2018<br>Emissions: 747 Mt CO\u2082e<br>+9.0 Mt (+1.2% vs previous year)", "Year: 2019<br>Emissions: 747 Mt CO\u2082e<br>+0.0 Mt (+0.0% vs previous year)", "Year: 2020<br>Emissions: 682 Mt CO\u2082e<br>-65.0 Mt (-8.7% vs previous year)", "Year: 2021<br>Emissions: 694 Mt CO\u2082e<br>+12.0 Mt (+1.8% vs previous year)", "Year: 2022<br>Emissions: 700 Mt CO\u2082e<br>+6.0 Mt (+0.9% vs previous year)", "Year: 2023<br>Emissions: 694 Mt CO\u2082e<br>-6.0 Mt (-0.9% vs previous year)"], "type": "scatter", "mode": "markers", "marker": {"autocolorscale": false, "color": "rgba(77,77,77,1)", "opacity": 1, "size": 9.448818897637796, "symbol": "circle", "line": {"width": 1.8897637795275593, "color": "rgba(77,77,77,1)"}}, "hoveron": "points", "showlegend": false, "xaxis": "x", "yaxis": "y", "hoverinfo": "text", "frame": null}, {"x": [2016, 2021], "y": [725, 694], "text": "", "type": "scatter", "mode": "markers", "marker": {"autocolorscale": false, "color": "rgba(27,120,55,1)", "opacity": 1, "size": 15.118110236220474, "symbol": "circle", "line": {"width": 1.8897637795275593, "color": "rgba(27,120,55,1)"}}, "hoveron": "points", "showlegend": false, "xaxis": "x", "yaxis": "y", "hoverinfo": "text", "frame": null}, {"x": [2016, 2021], "y": [733, 702], "text": [725, 694], "hovertext": ["", ""], "textfont": {"size": 13.228346456692915, "color": "rgba(27,120,55,1)"}, "type": "scatter", "mode": "text", "hoveron": "points", "showlegend": false, "xaxis": "x", "yaxis": "y", "hoverinfo": "text", "frame": null}, {"x": [2019.5], "y": [765], "text": "-31.0 Mt (-4.3% vs 2016)", "hovertext": "", "textfont": {"size": 15.118110236220474, "color": "rgba(215,48,39,1)"}, "type": "scatter", "mode": "text", "hoveron": "points", "showlegend": false, "xaxis": "x", "yaxis": "y", "hoverinfo": "text", "frame": null}], "layout": {"margin": {"t": 46.28642590286426, "r": 7.970112079701122, "b": 43.83561643835617, "l": 47.02366127023662}, "font": {"color": "rgba(0,0,0,1)", "family": "", "size": 15.940224159402243}, "title": {"text": "<b> National transport GHG emissions </b>", "font": {"color": "rgba(0,0,0,1)", "family": "", "size": 19.12826899128269}, "x": 0, "xref": "paper"}, "xaxis": {"domain": [0, 1], "automargin": true, "type": "linear", "autorange": false, "range": [2009.35, 2023.65], "tickmode": "array", "ticktext": ["2010", "2012", "2014", "2016", "2018", "2020", "2022"], "tickvals": [2010, 2012, 2014, 2016, 2018, 2020, 2022], "categoryorder": "array", "categoryarray": ["2010", "2012", "2014", "2016", "2018", "2020", "2022"], "nticks": null, "ticks": "", "tickcolor": null, "ticklen": 3.985056039850561, "tickwidth": 0, "showticklabels": true, "tickfont": {"color": "rgba(77,77,77,1)", "family": "", "size": 12.7521793275218}, "tickangle": 0, "showline": false, "linecolor": null, "linewidth": 0, "showgrid": true, "gridcolor": "rgba(235,235,235,1)", "gridwidth": 0.7245556436091928, "zeroline": false, "anchor": "y", "title": {"text": "Year", "font": {"color": "rgba(0,0,0,1)", "family": "", "size": 15.940224159402243}}, "hoverformat": ".2f"}, "yaxis": {"domain": [0, 1], "automargin": true, "type": "linear", "autorange": false, "range": [677.85, 769.15], "tickmode": "array", "ticktext": ["700", "725", "750"], "tickvals": [700, 725, 750], "categoryorder": "array", "categoryarray": ["700", "725", "750"], "nticks": null, "ticks": "", "tickcolor": null, "ticklen": 3.985056039850561, "tickwidth": 0, "showticklabels": true, "tickfont": {"color": "rgba(77,77,77,1)", "family": "", "size": 12.7521793275218}, "tickangle": 0, "showline": false, "linecolor": null, "linewidth": 0, "showgrid": true, "gridcolor": "rgba(235,235,235,1)", "gridwidth": 0.7245556436091928, "zeroline": false, "anchor": "x", "title": {"text": "Emissions (Mt CO\u2082e)", "font": {"color": "rgba(0,0,0,1)", "family": "", "size": 15.940224159402243}}, "hoverformat": ".2f"}, "shapes": [{"type": "rect", "fillcolor": null, "line": {"color": null, "width": 0, "linetype": []}, "yref": "paper", "xref": "paper", "x0": 0, "x1": 1, "y0": 0, "y1": 1}], "showlegend": false, "legend": {"bgcolor": null, "bordercolor": null, "borderwidth": 0, "font": {"color": "rgba(0,0,0,1)", "family": "", "size": 12.7521793275218}}, "hovermode": "closest", "barmode": "relative"}, "config": {"doubleClick": "reset", "modeBarButtonsToAdd": ["hoverclosest", "hovercompare"], "showSendToCloud": false}, "source": "A", "attrs": {"11135a5798af": {"x": {}, "y": {}, "text": {}, "type": "scatter"}, "111352231061": {"x": {}, "y": {}, "text": {}}, "1113120930ed": {"x": {}, "y": {}}, "11135c141b7": {"x": {}, "y": {}, "label": {}}, "1113364d83bd": {"x": {}, "y": {}}}, "cur_data": "11135a5798af", "visdat": {"11135a5798af": ["function (y) ", "x"], "111352231061": ["function (y) ", "x"], "1113120930ed": ["function (y) ", "x"], "11135c141b7": ["function (y) ", "x"], "1113364d83bd": ["function (y) ", "x"]}, "highlight": {"on": "plotly_click", "persistent": false, "dynamic": false, "selectize": false, "opacityDim": 0.2, "selected": {"opacity": 1}, "debounce": 0}, "shinyEvents": ["plotly_hover", "plotly_click", "plotly_selected", "plotly_relayout", "plotly_brushed", "plotly_brushing", "plotly_clickannotation", "plotly_doubleclick", "plotly_deselect", "plotly_afterplot", "plotly_sunburstclick"], "base_url": "https://plot.ly"};
+const config_htmlwidget_6d77d7560fec3a86df08 = {
+    "data": [
+        // 1. 渐变面积填充 - 营造视觉丰富度
+        {
+            "x": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+            "y": [728, 738, 741, 750, 747, 742, 725, 738, 747, 747, 682, 694, 700, 694],
+            "fill": "tozeroy",
+            "fillcolor": "rgba(144, 238, 144, 0.3)",  // 浅绿色渐变填充
+            "type": "scatter",
+            "mode": "none",
+            "showlegend": false,
+            "hoverinfo": "skip",
+            "xaxis": "x",
+            "yaxis": "y"
+        },
+        // 2. 主趋势线 - 更粗更明显
+        {
+            "x": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+            "y": [728, 738, 741, 750, 747, 742, 725, 738, 747, 747, 682, 694, 700, 694],
+            "type": "scatter",
+            "mode": "lines",
+            "line": {
+                "width": 4,
+                "color": "rgba(34, 139, 34, 0.9)",  // 深绿色主线
+                "shape": "spline",  // 平滑曲线
+                "smoothing": 1.0
+            },
+            "showlegend": false,
+            "hoverinfo": "skip",
+            "xaxis": "x",
+            "yaxis": "y"
+        },
+        // 3. 所有数据点 - 小圆点
+        {
+            "x": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+            "y": [728, 738, 741, 750, 747, 742, 725, 738, 747, 747, 682, 694, 700, 694],
+            "text": [
+                "Year: 2010<br>Emissions: 728 Mt CO₂e<br>Baseline year",
+                "Year: 2011<br>Emissions: 738 Mt CO₂e<br>+10 Mt (+1.4% vs previous year)",
+                "Year: 2012<br>Emissions: 741 Mt CO₂e<br>+3 Mt (+0.4% vs previous year)",
+                "Year: 2013<br>Emissions: 750 Mt CO₂e<br>+9 Mt (+1.2% vs previous year)",
+                "Year: 2014<br>Emissions: 747 Mt CO₂e<br>-3 Mt (-0.4% vs previous year)",
+                "Year: 2015<br>Emissions: 742 Mt CO₂e<br>-5 Mt (-0.7% vs previous year)",
+                "Year: 2016<br>Emissions: 725 Mt CO₂e<br>-17 Mt (-2.3% vs previous year)",
+                "Year: 2017<br>Emissions: 738 Mt CO₂e<br>+13 Mt (+1.8% vs previous year)",
+                "Year: 2018<br>Emissions: 747 Mt CO₂e<br>+9 Mt (+1.2% vs previous year)",
+                "Year: 2019<br>Emissions: 747 Mt CO₂e<br>+0 Mt (+0.0% vs previous year)",
+                "Year: 2020<br>Emissions: 682 Mt CO₂e<br>-65 Mt (-8.7% vs previous year)",
+                "Year: 2021<br>Emissions: 694 Mt CO₂e<br>+12 Mt (+1.8% vs previous year)",
+                "Year: 2022<br>Emissions: 700 Mt CO₂e<br>+6 Mt (+0.9% vs previous year)",
+                "Year: 2023<br>Emissions: 694 Mt CO₂e<br>-6 Mt (-0.9% vs previous year)"
+            ],
+            "type": "scatter",
+            "mode": "markers",
+            "marker": {
+                "color": "rgba(60, 179, 113, 1)",  // 中绿色
+                "size": 8,
+                "line": {
+                    "color": "white",
+                    "width": 2
+                }
+            },
+            "showlegend": false,
+            "xaxis": "x",
+            "yaxis": "y",
+            "hoverinfo": "text",
+            "hoverlabel": {
+                "bgcolor": "rgba(255, 255, 255, 0.95)",
+                "bordercolor": "rgba(34, 139, 34, 1)",
+                "font": {
+                    "size": 13,
+                    "color": "#333"
+                }
+            }
+        },
+        // 4. Census年份 2016 和 2021 - 特别强调
+        {
+            "x": [2016, 2021],
+            "y": [725, 694],
+            "text": [
+                "<b>2016 Census Year</b><br>Emissions: 725 Mt CO₂e",
+                "<b>2021 Census Year</b><br>Emissions: 694 Mt CO₂e"
+            ],
+            "type": "scatter",
+            "mode": "markers",
+            "marker": {
+                "color": "rgba(0, 100, 0, 1)",  // 深绿色强调
+                "size": 16,
+                "symbol": "diamond",
+                "line": {
+                    "color": "white",
+                    "width": 3
+                }
+            },
+            "showlegend": false,
+            "xaxis": "x",
+            "yaxis": "y",
+            "hoverinfo": "text",
+            "hoverlabel": {
+                "bgcolor": "rgba(0, 100, 0, 0.9)",
+                "font": {
+                    "color": "white",
+                    "size": 14
+                }
+            }
+        },
+        // 5. 2020年疫情影响 - 特殊标记
+        {
+            "x": [2020],
+            "y": [682],
+            "text": ["<b>2020 COVID-19 Impact</b><br>Emissions: 682 Mt CO₂e<br>Largest drop: -65 Mt (-8.7%)"],
+            "type": "scatter",
+            "mode": "markers",
+            "marker": {
+                "color": "rgba(220, 20, 60, 1)",  // 红色标记
+                "size": 14,
+                "symbol": "star",
+                "line": {
+                    "color": "white",
+                    "width": 2
+                }
+            },
+            "showlegend": false,
+            "xaxis": "x",
+            "yaxis": "y",
+            "hoverinfo": "text",
+            "hoverlabel": {
+                "bgcolor": "rgba(220, 20, 60, 0.9)",
+                "font": {
+                    "color": "white",
+                    "size": 14
+                }
+            }
+        },
+        // 6. 2016-2021变化标注
+        {
+            "x": [2018.5],
+            "y": [770],
+            "text": ["<b>2016 → 2021 Change</b><br>-31 Mt CO₂e (-4.3%)"],
+            "type": "scatter",
+            "mode": "text",
+            "textfont": {
+                "size": 15,
+                "color": "rgba(0, 100, 0, 1)",
+                "family": "Arial, sans-serif"
+            },
+            "showlegend": false,
+            "xaxis": "x",
+            "yaxis": "y",
+            "hoverinfo": "skip"
+        }
+    ],
+    "layout": {
+        "margin": {"t": 60, "r": 40, "b": 50, "l": 60},
+        "paper_bgcolor": "rgba(250, 250, 250, 1)",
+        "plot_bgcolor": "rgba(255, 255, 255, 1)",
+        "font": {"color": "#333", "family": "Arial, sans-serif", "size": 13},
+        "title": {
+            "text": "<b>National Transport GHG Emissions Trend (2010-2023)</b>",
+            "font": {"color": "#1b5e20", "family": "Arial, sans-serif", "size": 20, "weight": "bold"},
+            "x": 0.5,
+            "xanchor": "center",
+            "y": 0.98,
+            "yanchor": "top"
+        },
+        "xaxis": {
+            "domain": [0, 1],
+            "type": "linear",
+            "range": [2009.5, 2023.5],
+            "tickmode": "linear",
+            "tick0": 2010,
+            "dtick": 1,
+            "tickfont": {"color": "#555", "size": 12},
+            "showline": true,
+            "linecolor": "#ddd",
+            "linewidth": 1,
+            "showgrid": true,
+            "gridcolor": "rgba(200, 200, 200, 0.3)",
+            "gridwidth": 1,
+            "zeroline": false,
+            "title": {
+                "text": "<b>Year</b>",
+                "font": {"color": "#333", "size": 14}
+            }
+        },
+        "yaxis": {
+            "domain": [0, 1],
+            "type": "linear",
+            "range": [650, 780],
+            "tickmode": "linear",
+            "tick0": 650,
+            "dtick": 25,
+            "tickfont": {"color": "#555", "size": 12},
+            "showline": true,
+            "linecolor": "#ddd",
+            "linewidth": 1,
+            "showgrid": true,
+            "gridcolor": "rgba(200, 200, 200, 0.3)",
+            "gridwidth": 1,
+            "zeroline": false,
+            "title": {
+                "text": "<b>GHG Emissions (Mt CO₂e)</b>",
+                "font": {"color": "#333", "size": 14}
+            }
+        },
+        // 添加垂直参考线标注重要年份
+        "shapes": [
+            // 2016 Census Year 参考线
+            {
+                "type": "line",
+                "x0": 2016, "x1": 2016,
+                "y0": 650, "y1": 725,
+                "line": {
+                    "color": "rgba(0, 100, 0, 0.3)",
+                    "width": 2,
+                    "dash": "dash"
+                }
+            },
+            // 2021 Census Year 参考线
+            {
+                "type": "line",
+                "x0": 2021, "x1": 2021,
+                "y0": 650, "y1": 694,
+                "line": {
+                    "color": "rgba(0, 100, 0, 0.3)",
+                    "width": 2,
+                    "dash": "dash"
+                }
+            },
+            // 2020 COVID-19 参考线
+            {
+                "type": "line",
+                "x0": 2020, "x1": 2020,
+                "y0": 650, "y1": 682,
+                "line": {
+                    "color": "rgba(220, 20, 60, 0.3)",
+                    "width": 2,
+                    "dash": "dot"
+                }
+            }
+        ],
+        "showlegend": false,
+        "hovermode": "closest"
+    },
+    "config": {
+        "displayModeBar": true,
+        "displaylogo": false,
+        "modeBarButtonsToRemove": ["lasso2d", "select2d"],
+        "responsive": true
+    }
+};
 
 Plotly.newPlot(
     'htmlwidget-6d77d7560fec3a86df08', 

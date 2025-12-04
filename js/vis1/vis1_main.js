@@ -33,11 +33,9 @@ class App {
       this.pieFilterManager = new PieFilterManager();
       this.barFilterManager = new BarFilterManager();
 
-      // Populate CMA options for both
-      const cmaCodes = ['535', '462', '505', '933', '825', '835'];
-      this.pieFilterManager.populateCMAOptions(cmaCodes);
-      this.barFilterManager.populateCMAOptions(cmaCodes);
-
+      // 不需要调用 populateCMAOptions，因为 HTML 中已经有正确的选项
+      // HTML 中使用城市名称（Toronto, Montreal等），与 vis0 和 vis2 保持一致
+      
       // Set up filter change handlers
       this.pieFilterManager.onFilterChange = (state) => {
         this.renderPieChart();
@@ -47,32 +45,8 @@ class App {
         this.renderBarChart();
       };
 
-      // Listen for CMA selection from pie chart
-      document.addEventListener('cmaSelected', (e) => {
-        const cmaCode = e.detail.cma;
-        this.pieFilterManager.handleExternalCMASelection(cmaCode);
-        this.barFilterManager.handleExternalCMASelection(cmaCode);
-      });
-
-      // Subscribe to global city changes
-      if (typeof globalStateManager !== 'undefined') {
-        globalStateManager.subscribe((detail) => {
-          // Only respond to changes from other visualizations (not from our own pie/bar charts)
-          if (detail.source !== 'vis1-pie' && detail.source !== 'vis1-bar') {
-            console.log('Vis 1 received global city change:', detail.value);
-            
-            let cmaCode = detail.value;
-            
-            // If it's a name (from Vis2), convert to code using global mapping
-            if (globalStateManager.nameToCma[detail.value]) {
-              cmaCode = globalStateManager.nameToCma[detail.value];
-            }
-            
-            this.pieFilterManager.handleExternalCMASelection(cmaCode);
-            this.barFilterManager.handleExternalCMASelection(cmaCode);
-          }
-        });
-      }
+      // Note: Global state subscription is now handled in filters.js
+      // Each filter manager (pie and bar) subscribes independently in their initializeUI() method
 
       if (loadingMessage) {
         loadingMessage.textContent = 'Rendering charts...';
@@ -165,16 +139,30 @@ class App {
     html += `<p><strong>Total Low-Income Essential Workers (2021):</strong> ${formatNumber(Math.round(data.total2021))}</p>`;
     html += `<p><strong>Change from 2016:</strong> ${formatNumber(Math.round(data.total2021 - data.total2016))} 
               (${formatPercent(((data.total2021 - data.total2016) / data.total2016) * 100)}%)</p>`;
-    html += `<h4>Distribution by CMA (2021):</h4><ul>`;
-
+    
+    html += `<h4>Distribution by CMA:</h4><ul>`;
+    
+    // Create a map of 2016 data for easy lookup
+    const data2016Map = {};
+    data.data2016.forEach(d => {
+      data2016Map[d.cma] = d.percentage;
+    });
+    
     data.data2021.forEach(d => {
       const netChange = data.netChange[d.cma];
+      const pct2016 = data2016Map[d.cma];
       const changeSymbol = netChange >= 0 ? '+' : '';
       const changeColor = netChange >= 0 ? '#43a047' : '#e53935';
-      html += `<li><strong>${d.name}:</strong> ${formatPercent(d.percentage)}% 
+      const arrow = netChange >= 0 ? '↑' : '↓';
+      
+      html += `<li><strong>${d.name}:</strong> 
+                  <span style="color:#888">${formatPercent(pct2016)}%</span> 
+                  <span style="color:${changeColor}; font-size:1.1em;">${arrow}</span> 
+                  ${formatPercent(d.percentage)}% 
                   (<span style="color:${changeColor}">${changeSymbol}${formatPercent(netChange)}pp</span>)</li>`;
     });
     html += '</ul></div>';
+    
     infoPanel.innerHTML = html;
   }
 

@@ -29,19 +29,39 @@
 
       <div id="vis0-icon-controls" class="control-section active">
         <h3>Section 1: Icon Chart</h3>
-        <p class="helper-text">Select a region to view commute mode composition.</p>
+        <p class="helper-text">Select regions to view commute mode composition.</p>
 
         <div class="control-group">
-          <label for="vis0-icon-city-selector">Region Selection</label>
-          <select id="vis0-icon-city-selector">
-            <option value="All">Overview (All CMAs)</option>
-            <option value="Toronto">Toronto</option>
-            <option value="Montreal">Montréal</option>
-            <option value="Ottawa">Ottawa-Gatineau</option>
-            <option value="Vancouver">Vancouver</option>
-            <option value="Calgary">Calgary</option>
-            <option value="Edmonton">Edmonton</option>
-          </select>
+          <label>Region Selection</label>
+          <div class="checkbox-group" id="vis0-icon-city-selector">
+            <div class="checkbox-dropdown-toggle">
+              <span class="selected-text">Overview (All CMAs)</span>
+              <i class="checkbox-dropdown-arrow fas fa-chevron-down"></i>
+            </div>
+            <div class="checkbox-dropdown-content">
+              <label class="checkbox-item">
+                <input type="checkbox" value="All" checked> Overview (All CMAs)
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Toronto" checked> Toronto
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Montreal" checked> Montréal
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Ottawa" checked> Ottawa-Gatineau
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Vancouver" checked> Vancouver
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Calgary" checked> Calgary
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Edmonton" checked> Edmonton
+              </label>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -64,15 +84,41 @@
         <p class="helper-text">Filter to see population pie chart.</p>
 
         <div class="control-group">
-          <label for="cma-select-pie">Region Selection</label>
-          <select id="cma-select-pie">
-            <option value="overview">Overview (All CMAs)</option>
-          </select>
+          <label>Region Selection</label>
+          <div class="checkbox-group" id="cma-select-pie">
+            <div class="checkbox-dropdown-toggle">
+              <span class="selected-text">Overview (All CMAs)</span>
+              <i class="checkbox-dropdown-arrow fas fa-chevron-down"></i>
+            </div>
+            <div class="checkbox-dropdown-content">
+              <label class="checkbox-item">
+                <input type="checkbox" value="overview" checked> Overview (All CMAs)
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Toronto" checked> Toronto
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Montreal" checked> Montréal
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Ottawa" checked> Ottawa-Gatineau
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Vancouver" checked> Vancouver
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Calgary" checked> Calgary
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Edmonton" checked> Edmonton
+              </label>
+            </div>
+          </div>
         </div>
 
         <div class="control-group">
           <label>
-            Income Bracket: <span id="income-value-pie">$0 - $150,000</span>
+            Annual Income Bracket: <span id="income-value-pie">$0 - $150,000</span>
           </label>
           <div class="range-slider-container">
             <div class="slider-track"></div>
@@ -92,15 +138,41 @@
         <p class="helper-text">Filter to see commute mode bar chart.</p>
 
         <div class="control-group">
-          <label for="cma-select-bar">Region Selection</label>
-          <select id="cma-select-bar">
-            <option value="overview">Overview (All CMAs)</option>
-          </select>
+          <label>Region Selection</label>
+          <div class="checkbox-group" id="cma-select-bar">
+            <div class="checkbox-dropdown-toggle">
+              <span class="selected-text">Overview (All CMAs)</span>
+              <i class="checkbox-dropdown-arrow fas fa-chevron-down"></i>
+            </div>
+            <div class="checkbox-dropdown-content">
+              <label class="checkbox-item">
+                <input type="checkbox" value="overview" checked> Overview (All CMAs)
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Toronto" checked> Toronto
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Montreal" checked> Montréal
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Ottawa" checked> Ottawa-Gatineau
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Vancouver" checked> Vancouver
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Calgary" checked> Calgary
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" value="Edmonton" checked> Edmonton
+              </label>
+            </div>
+          </div>
         </div>
 
         <div class="control-group">
           <label>
-            Income Bracket: <span id="income-value-bar">$0 - $150,000</span>
+            Annual Income Bracket: <span id="income-value-bar">$0 - $150,000</span>
           </label>
           <div class="range-slider-container">
             <div class="slider-track"></div>
@@ -145,10 +217,18 @@
         </div>
 
         <div class="control-group">
-          <label for="vis2-CMA-select">Region Selection</label>
-          <select id="vis2-CMA-select">
-            <option value="all">Overview (All CMAs)</option>
-          </select>
+          <label>Region Selection</label>
+          <div class="checkbox-group" id="vis2-CMA-select">
+            <div class="checkbox-dropdown-toggle">
+              <span class="selected-text">Overview (All CMAs)</span>
+              <i class="checkbox-dropdown-arrow fas fa-chevron-down"></i>
+            </div>
+            <div class="checkbox-dropdown-content">
+              <label class="checkbox-item">
+                <input type="checkbox" value="all" checked> Overview (All CMAs)
+              </label>
+            </div>
+          </div>
         </div>
 
         <button id="vis2-reset-btn" class="btn-reset">Reset Impact View</button>
@@ -176,6 +256,9 @@
       </div>
 
     </aside>
+
+    <!-- 侧边栏拖拽手柄 -->
+    <div id="sidebar-resizer" class="sidebar-resizer"></div>
 
     <main id="main-content">
 
@@ -373,29 +456,115 @@
   <!-- Vis0 Tooltips -->
   <div id="vis0-icon-tooltip"></div>
 
-  <!-- 侧边栏切换功能 -->
+  <!-- 侧边栏切换和拖拽功能 -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const toggleBtn = document.getElementById('sidebar-toggle');
       const appContainer = document.getElementById('app-container');
+      const sidebar = document.getElementById('sidebar');
+      const resizer = document.getElementById('sidebar-resizer');
+      
+      let isResizing = false;
+      let startX = 0;
+      let startWidth = 0;
+
+      // 更新切换按钮的位置
+      function updateToggleButtonPosition() {
+        const isHidden = appContainer.classList.contains('sidebar-hidden');
+        if (isHidden) {
+          toggleBtn.style.left = '20px';
+        } else {
+          const sidebarWidth = sidebar.offsetWidth;
+          const buttonOffset = sidebarWidth - 25; // 按钮直径的一半，使其居中在边缘
+          toggleBtn.style.left = buttonOffset + 'px';
+        }
+      }
+
+      // 从 localStorage 读取保存的宽度
+      const savedWidth = localStorage.getItem('sidebarWidth');
+      if (savedWidth) {
+        sidebar.style.width = savedWidth + 'px';
+      }
 
       // 从 localStorage 读取侧边栏状态
       const sidebarHidden = localStorage.getItem('sidebarHidden') === 'true';
       if (sidebarHidden) {
         appContainer.classList.add('sidebar-hidden');
       }
+      
+      // 初始化按钮位置
+      updateToggleButtonPosition();
 
+      // 侧边栏切换功能
       toggleBtn.addEventListener('click', function () {
+        // 切换时使用平滑过渡
+        toggleBtn.classList.add('smooth-transition');
+        
         appContainer.classList.toggle('sidebar-hidden');
 
         // 保存状态到 localStorage
         const isHidden = appContainer.classList.contains('sidebar-hidden');
         localStorage.setItem('sidebarHidden', isHidden);
 
+        // 更新按钮位置
+        updateToggleButtonPosition();
+
         // 触发窗口 resize 事件，让图表重新调整大小
         setTimeout(() => {
           window.dispatchEvent(new Event('resize'));
         }, 300);
+      });
+
+      // 侧边栏拖拽功能
+      resizer.addEventListener('mousedown', function(e) {
+        isResizing = true;
+        startX = e.clientX;
+        startWidth = sidebar.offsetWidth;
+        
+        resizer.classList.add('resizing');
+        // 拖拽时移除按钮的过渡动画，实现即时跟随
+        toggleBtn.classList.remove('smooth-transition');
+        document.body.style.cursor = 'ew-resize';
+        document.body.style.userSelect = 'none';
+        
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', function(e) {
+        if (!isResizing) return;
+        
+        const deltaX = e.clientX - startX;
+        let newWidth = startWidth + deltaX;
+        
+        // 限制最小和最大宽度
+        const minWidth = 250;
+        const maxWidth = 800;
+        newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+        
+        sidebar.style.width = newWidth + 'px';
+        
+        // 直接计算并更新按钮位置，避免读取offsetWidth造成的延迟
+        const buttonOffset = newWidth - 25;
+        toggleBtn.style.left = buttonOffset + 'px';
+      });
+
+      document.addEventListener('mouseup', function() {
+        if (isResizing) {
+          isResizing = false;
+          resizer.classList.remove('resizing');
+          // 拖拽结束后恢复按钮的过渡动画
+          toggleBtn.classList.add('smooth-transition');
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+          
+          // 保存新宽度到 localStorage
+          localStorage.setItem('sidebarWidth', sidebar.offsetWidth);
+          
+          // 触发窗口 resize 事件，让图表重新调整大小
+          setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+          }, 100);
+        }
       });
     });
   </script>

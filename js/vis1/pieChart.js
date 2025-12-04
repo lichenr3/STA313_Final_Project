@@ -188,24 +188,16 @@ class PieChart {
       .on('mouseover', (event, d) => this.handleMouseOver(event, d, year, arcHoverGenerator))
       .on('mouseout', (event, d) => this.handleMouseOut(event, d, arcGenerator))
       .on('click', (event, d) => this.handleClick(event, d))
-      .transition()
-      .duration(transitionDuration())
-      .ease(easeFunction())
-      .attrTween('d', function (d) {
-        const interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
-        return function (t) {
-          return arcGenerator(interpolate(t));
-        };
-      });
+      .each(function(d) { this._current = { startAngle: 0, endAngle: 0 }; });
 
-    // Update
-    arcs.select('path')
+    // Merge enter + update
+    arcs.merge(arcsEnter).select('path')
       .transition()
       .duration(transitionDuration())
       .ease(easeFunction())
       .attrTween('d', function (d) {
-        const currentArc = d3.select(this).datum();
-        const interpolate = d3.interpolate(currentArc || d, d);
+        const interpolate = d3.interpolate(this._current || { startAngle: 0, endAngle: 0 }, d);
+        this._current = interpolate(1); // Store current state
         return function (t) {
           return arcGenerator(interpolate(t));
         };

@@ -109,7 +109,41 @@
         const subtitle = document.getElementById('vis0-icon-subtitle');
         if (!subtitle) return;
 
-        subtitle.innerHTML = `Each icon represents approximately <span class="highlight-unit">6.25%</span> of the workforce. Hover over icons for detailed statistics.`;
+        // 获取当前选中的城市信息
+        const checkboxGroup = document.getElementById('vis0-icon-city-selector');
+        if (!checkboxGroup) return;
+        
+        const allCheckboxes = checkboxGroup.querySelectorAll('input[type="checkbox"]');
+        const checkedCheckboxes = checkboxGroup.querySelectorAll('input[type="checkbox"]:checked');
+        const allCheckbox = Array.from(allCheckboxes).find(cb => cb.value === 'All');
+        const isAllChecked = allCheckbox && allCheckbox.checked;
+        
+        // 获取选中的城市（不包括All）
+        const selectedCities = Array.from(checkedCheckboxes)
+            .map(cb => cb.value)
+            .filter(v => v !== 'All');
+        
+        let regionText = '';
+        
+        if (isAllChecked && selectedCities.length === 6) {
+            // All被选中且所有6个城市都被选中
+            regionText = 'Showing data for <strong>all 6 CMAs</strong>. ';
+        } else if (isAllChecked) {
+            // 只有All被选中（其他城市未全部选中）
+            regionText = 'Showing <strong>aggregated data for all CMAs</strong>. ';
+        } else if (selectedCities.length === 0) {
+            // 没有任何选择（理论上不应该发生）
+            regionText = 'No regions selected. ';
+        } else if (selectedCities.length === 1) {
+            // 只选中了一个城市
+            regionText = `Showing data for <strong>${selectedCities[0]}</strong>. `;
+        } else {
+            // 选中了多个城市（但不包括All）
+            const cityList = selectedCities.slice(0, -1).join(', ') + ' and ' + selectedCities[selectedCities.length - 1];
+            regionText = `Showing data for <strong>${cityList}</strong>. `;
+        }
+
+        subtitle.innerHTML = `${regionText}Each icon represents approximately <span class="highlight-unit">6.25%</span> of the workforce. Hover over icons for detailed statistics.`;
     }
 
     // --- 3B. STATISTICS PANEL UPDATER ---
@@ -162,25 +196,47 @@
 
     // --- 4. CONTROLLER ---
     function updateChart() {
-        const selector = document.getElementById('vis0-icon-city-selector');
-        if (!selector) {
+        const checkboxGroup = document.getElementById('vis0-icon-city-selector');
+        if (!checkboxGroup) {
             console.error('Icon city selector not found');
             return;
         }
 
-        const selectedCity = selector.value;
-        const cityData = dataset[selectedCity];
+        // 获取所有选中的城市
+        const checkboxes = checkboxGroup.querySelectorAll('input[type="checkbox"]:checked');
+        const selectedCities = Array.from(checkboxes).map(cb => cb.value);
+
+        if (selectedCities.length === 0) {
+            console.error('No cities selected');
+            return;
+        }
+
+        // 如果选中了"All"或多个城市，使用"All"的数据
+        let cityData;
+        let displayName;
+
+        if (selectedCities.includes('All') || selectedCities.length > 1) {
+            cityData = dataset['All'];
+            displayName = selectedCities.length > 1 
+                ? selectedCities.join(' + ')
+                : 'All';
+        } else {
+            // 单选情况
+            const selectedCity = selectedCities[0];
+            cityData = dataset[selectedCity];
+            displayName = selectedCity;
+        }
 
         if (!cityData) {
-            console.error(`No data for city: ${selectedCity}`);
+            console.error(`No data for cities: ${selectedCities.join(', ')}`);
             return;
         }
 
         // Update Subtitle logic
-        updateSubtitle(selectedCity);
+        updateSubtitle(displayName);
 
         // Update Statistics Panel
-        updateStatistics(selectedCity);
+        updateStatistics(displayName);
 
         // Render Rows
         renderRow(2016, cityData[2016]);
@@ -223,22 +279,167 @@
         return normalized[name] || name;
     };
 
+    // --- 5B. OVERVIEW AS SELECT ALL LOGIC ---
+    function handleOverviewExclusive(clickedCheckbox) {
+        const checkboxGroup = document.getElementById('vis0-icon-city-selector');
+        if (!checkboxGroup) return;
+
+        const checkboxes = checkboxGroup.querySelectorAll('input[type="checkbox"]');
+        const allCheckbox = Array.from(checkboxes).find(cb => cb.value === 'All');
+        const cityCheckboxes = Array.from(checkboxes).filter(cb => cb.value !== 'All');
+        
+        const checkedCities = cityCheckboxes.filter(cb => cb.checked);
+        const allCitiesChecked = cityCheckboxes.length > 0 && checkedCities.length === cityCheckboxes.length;
+
+        if (!allCheckbox) return;
+
+        // 如果点击的是All checkbox
+        if (clickedCheckbox && clickedCheckbox.value === 'All') {
+            if (allCheckbox.checked) {
+                // All被选中，选中所有城市
+                cityCheckboxes.forEach(cb => cb.checked = true);
+            } else {
+                // All被取消，取消所有城市（但会被防止取消最后一个的逻辑拦截）
+                cityCheckboxes.forEach(cb => cb.checked = false);
+            }
+        }
+        // 如果点击的是城市checkbox
+        else {
+            // 如果所有城市都被选中，自动勾选All
+            if (allCitiesChecked) {
+                allCheckbox.checked = true;
+            }
+            // 如果不是所有城市都被选中，自动取消All
+            else {
+                allCheckbox.checked = false;
+            }
+        }
+    }
+
+    // --- 5C. DROPDOWN FUNCTIONALITY ---
+    function initializeDropdown(container) {
+        const toggle = container.querySelector('.checkbox-dropdown-toggle');
+        const content = container.querySelector('.checkbox-dropdown-content');
+        const arrow = container.querySelector('.checkbox-dropdown-arrow');
+
+        if (!toggle || !content) return;
+
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            document.querySelectorAll('.checkbox-dropdown-content.open').forEach(el => {
+                if (el !== content) {
+                    el.classList.remove('open');
+                    el.previousElementSibling?.classList.remove('open');
+                    el.previousElementSibling?.querySelector('.checkbox-dropdown-arrow')?.classList.remove('open');
+                }
+            });
+
+            const isCurrentlyOpen = content.classList.contains('open');
+            if (isCurrentlyOpen) {
+                content.classList.remove('open');
+                toggle.classList.remove('open');
+                arrow?.classList.remove('open');
+            } else {
+                content.classList.add('open');
+                toggle.classList.add('open');
+                arrow?.classList.add('open');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!container.contains(e.target)) {
+                content.classList.remove('open');
+                toggle.classList.remove('open');
+                arrow?.classList.remove('open');
+            }
+        });
+
+        content.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
+    function updateDropdownText(container, checkboxes) {
+        const selectedText = container.querySelector('.selected-text');
+        if (!selectedText) return;
+
+        const checked = Array.from(checkboxes).filter(cb => cb.checked);
+        const allCheckbox = Array.from(checkboxes).find(cb => cb.value === 'All');
+        // Exclude the "All" checkbox from the count
+        const checkedCities = checked.filter(cb => cb.value !== 'All');
+
+        if (checked.length === 0) {
+            selectedText.textContent = 'Select cities...';
+        } else if (allCheckbox && allCheckbox.checked) {
+            // 如果overview被选中，显示"Overview (All CMAs)"
+            selectedText.textContent = 'Overview (All CMAs)';
+        } else if (checked.length === 1) {
+            const label = checked[0].parentElement.textContent.trim();
+            selectedText.textContent = label;
+        } else {
+            selectedText.textContent = `${checkedCities.length} cities selected`;
+        }
+    }
+
     // --- 6. INITIALIZATION ---
     function init() {
         console.log('Vis0 Icons Chart initializing...');
 
-        // Bind event listeners
-        const selector = document.getElementById('vis0-icon-city-selector');
-        if (selector) {
-            selector.addEventListener('change', (e) => {
-                updateChart();
-                
-                // Notify global state manager
-                const selectedCity = e.target.value;
-                const cmaCode = cityNameToCmaCode[selectedCity];
-                if (cmaCode && typeof globalStateManager !== 'undefined') {
-                    globalStateManager.notifyCityChanged('vis0', cmaCode);
-                }
+        // Bind event listeners to checkboxes
+        const checkboxGroup = document.getElementById('vis0-icon-city-selector');
+        if (checkboxGroup) {
+            // Initialize dropdown
+            initializeDropdown(checkboxGroup);
+            
+            const checkboxes = checkboxGroup.querySelectorAll('input[type="checkbox"]');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    // 防止手动取消Overview
+                    const allCheckbox = Array.from(checkboxes).find(cb => cb.value === 'All');
+                    if (checkbox.value === 'All' && !checkbox.checked) {
+                        e.preventDefault();
+                        checkbox.checked = true;
+                        return;
+                    }
+                    
+                    // 防止取消最后一个选项
+                    const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+                    if (checkedCount === 0) {
+                        e.preventDefault();
+                        checkbox.checked = true;
+                        return;
+                    }
+                    
+                    // 应用全选逻辑，传入被点击的checkbox
+                    handleOverviewExclusive(checkbox);
+                    
+                    // 更新下拉框文本
+                    updateDropdownText(checkboxGroup, checkboxes);
+                    
+                    updateChart();
+                    
+                    // Notify global state manager with selected city names
+                    // 注意：handleOverviewExclusive可能已经改变了checkbox状态，所以这里需要重新读取
+                    let valuesToSend;
+                    
+                    // 如果All被选中，只发送['All']
+                    if (allCheckbox && allCheckbox.checked) {
+                        valuesToSend = ['All'];
+                    } else {
+                        // 否则发送选中的城市名称（不是CMA codes）
+                        valuesToSend = Array.from(checkboxes)
+                            .filter(cb => cb.checked && cb.value !== 'All')
+                            .map(cb => cb.value);
+                    }
+                    
+                    // 即使valuesToSend是空数组，也要发送（让其他vis知道要取消所有选择）
+                    // 但由于我们有"防止取消最后一个选项"的逻辑，这种情况不应该发生
+                    if (typeof globalStateManager !== 'undefined') {
+                        globalStateManager.notifyCityChanged('vis0', valuesToSend.length > 0 ? valuesToSend : ['All']);
+                    }
+                });
             });
         }
 
@@ -248,22 +449,39 @@
                 // Don't react to our own changes
                 if (detail.source === 'vis0') return;
 
-                let cityName;
+                const checkboxes = checkboxGroup?.querySelectorAll('input[type="checkbox"]');
+                if (!checkboxes) return;
+
+                // detail.value 可能是单个值或数组
+                const values = Array.isArray(detail.value) ? detail.value : [detail.value];
                 
-                // Check if detail.value is a CMA code or a city name
-                if (cmaCodeToCityName[detail.value]) {
-                    // It's a CMA code (from vis1)
-                    cityName = cmaCodeToCityName[detail.value];
-                } else {
-                    // It's a city name (from vis2), normalize it
-                    cityName = normalizeCityName(detail.value);
-                }
+                // 检查是否为全选信号
+                const isAllSelected = values.includes('All') || values.includes('all') || values.includes('overview');
                 
-                if (cityName && selector) {
-                    // Update selector without triggering change event
-                    selector.value = cityName;
-                    updateChart();
-                }
+                // 更新checkboxes状态
+                checkboxes.forEach(checkbox => {
+                    if (isAllSelected) {
+                        // 全选：选中所有checkbox
+                        checkbox.checked = true;
+                    } else {
+                        const cityName = checkbox.value;
+                        const cmaCode = cityNameToCmaCode[cityName];
+                        
+                        // 检查是否应该被选中
+                        const shouldCheck = values.some(v => {
+                            return v === cityName || 
+                                   v === cmaCode || 
+                                   cmaCodeToCityName[v] === cityName;
+                        });
+                        
+                        checkbox.checked = shouldCheck;
+                    }
+                });
+                
+                // 更新下拉框显示文本
+                updateDropdownText(checkboxGroup, checkboxes);
+                
+                updateChart();
             });
         }
 

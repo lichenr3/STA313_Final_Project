@@ -17,6 +17,8 @@ body {
 /* 左侧侧边栏 */
 #sidebar {
     width: 360px;
+    min-width: 250px;
+    max-width: 800px;
     /* 侧边栏宽度 */
     background-color: #ffffff;
     border-right: 1px solid #ddd;
@@ -28,6 +30,33 @@ body {
     z-index: 10;
     overflow-y: auto;
     /* Ensure sidebar is scrollable if content is long */
+}
+
+/* 侧边栏拖拽手柄 */
+.sidebar-resizer {
+    width: 2px;
+    background-color: #e0e0e0;
+    cursor: ew-resize;
+    position: relative;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+    z-index: 11;
+}
+
+.sidebar-resizer:hover,
+.sidebar-resizer.resizing {
+    background-color: #8e24aa;
+    width: 3px;
+}
+
+.sidebar-resizer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -4px;
+    right: -4px;
+    bottom: 0;
+    /* 扩大可点击区域到10px */
 }
 
 #sidebar h2 {
@@ -78,6 +107,87 @@ select:focus {
     outline: none;
     border-color: #8e24aa;
     box-shadow: 0 0 0 2px rgba(142, 36, 170, 0.1);
+}
+
+/* Checkbox Group Styles - Dropdown Version */
+.checkbox-group {
+    position: relative;
+}
+
+.checkbox-dropdown-toggle {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    user-select: none;
+}
+
+.checkbox-dropdown-toggle:hover {
+    border-color: #aaa;
+}
+
+.checkbox-dropdown-toggle.open {
+    border-color: #8e24aa;
+    box-shadow: 0 0 0 2px rgba(142, 36, 170, 0.1);
+}
+
+.checkbox-dropdown-arrow {
+    transition: transform 0.2s;
+    color: #666;
+}
+
+.checkbox-dropdown-arrow.open {
+    transform: rotate(180deg);
+}
+
+.checkbox-dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.checkbox-dropdown-content.open {
+    display: block;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: normal;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+.checkbox-item:hover {
+    background-color: #f5f5f5;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #8e24aa;
 }
 
 .helper-text {
@@ -283,7 +393,12 @@ footer {
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* 当不在拖拽时，添加位置过渡动画 */
+.sidebar-toggle-btn.smooth-transition {
+    transition: left 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .sidebar-toggle-btn:hover {
@@ -305,6 +420,10 @@ footer {
     transform: translateX(-100%);
     margin-left: -360px;
     transition: transform 0.3s ease;
+}
+
+#app-container.sidebar-hidden .sidebar-resizer {
+    display: none;
 }
 
 #sidebar {

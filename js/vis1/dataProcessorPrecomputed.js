@@ -89,6 +89,14 @@ class DataProcessorPrecomputed {
       netChange[mode] = percentages2021[mode] - percentages2016[mode];
     });
 
+    // 计算绝对数量变化
+    const netChangeAbsolute = {};
+    allModes.forEach(mode => {
+      const count16 = counts2016[mode] || 0;
+      const count21 = counts2021[mode] || 0;
+      netChangeAbsolute[mode] = count21 - count16;
+    });
+
     return {
       counts2016,
       counts2021,
@@ -97,6 +105,7 @@ class DataProcessorPrecomputed {
       percentages2016,
       percentages2021,
       netChange,
+      netChangeAbsolute,
       modes: Array.from(allModes)
     };
   }
