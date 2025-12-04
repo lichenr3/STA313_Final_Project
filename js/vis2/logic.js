@@ -54,13 +54,13 @@
     });
 
     // 3. 填充下拉菜单函数
-    function populateSelect(id, items) {
+    function populateSelect(id, items, defaultText = 'All') {
         const select = document.getElementById(id);
         if (!select) {
             console.error(`Element with id '${id}' not found`);
             return;
         }
-        select.innerHTML = '<option value="all">All</option>';
+        select.innerHTML = `<option value="all">${defaultText}</option>`;
         const sortedItems = Array.from(items).sort();
         sortedItems.forEach(item => {
             const option = document.createElement('option');
@@ -70,8 +70,8 @@
         });
     }
 
-    populateSelect('vis2-mode-select', modes);
-    populateSelect('vis2-CMA-select', regions);
+    populateSelect('vis2-mode-select', modes, 'All Modes');
+    populateSelect('vis2-CMA-select', regions, 'Overview (All CMAs)');
 
     // 4. 渲染表格函数
     function renderTable(data) {

@@ -10,7 +10,7 @@ class BarChart {
     // Chart dimensions
     this.width = options.width || 900;
     this.height = options.height || 450;
-    this.margin = options.margin || { top: 60, right: 40, bottom: 120, left: 80 };
+    this.margin = options.margin || { top: 60, right: 100, bottom: 140, left: 80 };
 
     this.innerWidth = this.width - this.margin.left - this.margin.right;
     this.innerHeight = this.height - this.margin.top - this.margin.bottom;
@@ -212,17 +212,15 @@ class BarChart {
       .attr('dx', '-0.8em')
       .attr('dy', '0.15em')
       .attr('transform', 'rotate(-45)')
+      .style('font-size', '10px')
       .each(function() {
         const text = d3.select(this);
         const originalText = text.text();
-        // Truncate if longer than 20 characters
-        if (originalText.length > 20) {
-          text.text(originalText.substring(0, 18) + '...')
-            .append('title')
-            .text(originalText);
+        // Truncate to max 15 characters
+        if (originalText.length > 15) {
+          text.text(originalText.substring(0, 13) + '...');
         }
-      })
-      .style('font-size', '11px');
+      });
 
     // Y axis
     const yAxis = d3.axisLeft(this.yScale)

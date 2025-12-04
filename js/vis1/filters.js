@@ -34,14 +34,15 @@ class BaseFilterManager {
     this.sliderTrack = document.querySelector(`#vis1-${this.idPrefix}-controls .slider-track`);
 
     if (this.incomeMinInput && this.incomeMaxInput) {
-      const updateSlider = () => {
+      // Update min slider - ensure it doesn't exceed max
+      this.incomeMinInput.addEventListener('input', () => {
         let minVal = parseInt(this.incomeMinInput.value);
         let maxVal = parseInt(this.incomeMaxInput.value);
 
+        // Constrain: min cannot be greater than max
         if (minVal > maxVal) {
-          const temp = minVal;
           minVal = maxVal;
-          maxVal = temp;
+          this.incomeMinInput.value = minVal;
         }
 
         this.state.incomeMin = minVal;
@@ -53,10 +54,29 @@ class BaseFilterManager {
 
         this.updateSliderTrack();
         this.notifyChange();
-      };
+      });
 
-      this.incomeMinInput.addEventListener('input', updateSlider);
-      this.incomeMaxInput.addEventListener('input', updateSlider);
+      // Update max slider - ensure it doesn't go below min
+      this.incomeMaxInput.addEventListener('input', () => {
+        let minVal = parseInt(this.incomeMinInput.value);
+        let maxVal = parseInt(this.incomeMaxInput.value);
+
+        // Constrain: max cannot be less than min
+        if (maxVal < minVal) {
+          maxVal = minVal;
+          this.incomeMaxInput.value = maxVal;
+        }
+
+        this.state.incomeMin = minVal;
+        this.state.incomeMax = maxVal;
+
+        if (this.incomeValueDisplay) {
+          this.incomeValueDisplay.textContent = `${formatCurrency(minVal)} - ${formatCurrency(maxVal)}`;
+        }
+
+        this.updateSliderTrack();
+        this.notifyChange();
+      });
 
       this.updateSliderTrack();
     }
@@ -132,7 +152,7 @@ class PieFilterManager extends BaseFilterManager {
 class BarFilterManager extends BaseFilterManager {
   constructor() {
     super('bar');
-    
+
     // Additional state for bar chart
     this.state = {
       ...this.state,
@@ -141,7 +161,7 @@ class BarFilterManager extends BaseFilterManager {
       showPrivate: true,
       showNetChange: false
     };
-    
+
     this.initializeUI();
     this.initializeBarSpecificUI();
   }

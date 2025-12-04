@@ -3,8 +3,8 @@
 // CMA metadata
 const CMA_METADATA = {
   '535': { name: 'Toronto', color: '#702040', colorLight: '#8D3B55' },
-  '462': { name: 'Montreal', color: '#954050', colorLight: '#B0606F' },
-  '505': { name: 'Ottawa', color: '#CC7A75', colorLight: '#E09B97' },
+  '462': { name: 'Montréal', color: '#954050', colorLight: '#B0606F' },
+  '505': { name: 'Ottawa-Gatineau', color: '#CC7A75', colorLight: '#E09B97' },
   '933': { name: 'Vancouver', color: '#E29886', colorLight: '#F0B8AA' },
   '825': { name: 'Calgary', color: '#E9BFB1', colorLight: '#F5D6CC' },
   '835': { name: 'Edmonton', color: '#EFE6DE', colorLight: '#F9F3EF' }

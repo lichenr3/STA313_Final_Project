@@ -61,11 +61,23 @@ label {
 
 select {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #fff;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+select:hover {
+    border-color: #aaa;
+}
+
+select:focus {
+    outline: none;
+    border-color: #8e24aa;
+    box-shadow: 0 0 0 2px rgba(142, 36, 170, 0.1);
 }
 
 .helper-text {
@@ -89,6 +101,7 @@ select {
     overflow-y: auto;
     /* 允许垂直滚动 */
     scroll-behavior: smooth;
+    transition: all 0.3s ease;
 }
 
 /* Section Styles */
@@ -101,6 +114,7 @@ section {
     border-bottom: 1px solid #f0f0f0;
     max-width: 900px;
     margin: 0 auto;
+    transition: max-width 0.3s ease, padding 0.3s ease;
 }
 
 .chart-container {
@@ -160,10 +174,11 @@ h1 {
 .summary-box {
     flex: 1;
     /* 表格占 1 份宽度 */
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    margin-top: 20px;
     height: 500px;
     /* 固定高度，内部滚动 */
     display: flex;
@@ -187,10 +202,12 @@ h1 {
 
 /* --- 表格样式 --- */
 .summary-box h3 {
-    margin-top: 0;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-    color: #444;
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 8px;
 }
 
 .table-responsive {
@@ -297,11 +314,13 @@ footer {
 /* 当侧边栏隐藏时，主内容居中 */
 #app-container.sidebar-hidden #main-content {
     margin-left: 0;
-    /* max-width: 1400px; */
-    width: 100%;
-    margin: 0 auto;
     padding-left: 80px;
-    padding-right: 40px;
+    padding-right: 80px;
+}
+
+/* 当侧边栏隐藏时，section可以稍微更宽 */
+#app-container.sidebar-hidden section {
+    max-width: 1000px;
 }
 
 /* 当侧边栏隐藏时，切换按钮移到左边并旋转 */

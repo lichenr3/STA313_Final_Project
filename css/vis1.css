@@ -87,19 +87,21 @@ body {
 
 /* Info Panel */
 .info-panel {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  font-family: var(--font-sans);
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  margin-top: 20px;
   font-size: 0.9rem;
 }
 
 .info-panel h3 {
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-  border-bottom: 2px solid var(--primary-color);
-  padding-bottom: 0.5rem;
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
 }
 
 .info-panel ul {

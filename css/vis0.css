@@ -418,20 +418,24 @@
     padding: 15px;
     border-radius: 6px;
     border: 1px solid #e0e0e0;
+    margin-top: 20px;
 }
 
+.info-panel h3,
 .info-panel h4 {
     margin: 0 0 10px 0;
-    font-size: 14px;
-    font-weight: 700;
-    color: #2c3e50;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 8px;
 }
 
 .info-panel p {
     margin: 5px 0;
     line-height: 1.4;
+    color: #666;
+    font-size: 0.9rem;
 }
 
 /* Radio buttons styling */
@@ -522,6 +526,7 @@
         font-size: 16px;
     }
 }
+
 /* Radio Column Layout */
 .radio-col {
     display: flex;
