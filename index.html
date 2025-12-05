@@ -264,27 +264,29 @@
 
       <section id="intro" data-controls="vis0-icon-controls">
         <header class="article-header">
-          <h1>[Placeholder: Main Project Title]</h1>
-          <p class="subtitle">[Placeholder: A catchy subtitle summarizing the core conflict or question]</p>
+          <h1>Toronto Commuting in Context: Remote Work, Mode Shifts, and Emissions</h1>
+          <p class="subtitle">A dashboard for Toronto urban planners with benchmarks from Montréal, Ottawa-Gatineau, Vancouver, Calgary, and Edmonton</p>
         </header>
         <div class="narrative-text">
           <p class="lead">
-            [Placeholder: Introduction/Hook. Provide the "Why". Describe the status quo before the change (e.g.,
-            standard commuting) and the disruptive event (e.g., Pandemic/WFH).]
+            The COVID-19 pandemic reshaped how people in Canada's largest cities get to work. Remote work surged in many white-collar sectors, and some high-income workers stopped commuting altogether. But for essential, in-person jobs, daily travel never disappeared — and in some neighbourhoods it became longer, less convenient, or more car-dependent.
           </p>
+          <br>
           <p>
-            [Placeholder: Navigation Hint. Briefly explain how to use this website (scrolling, interacting with the
-            sidebar).]
+            This dashboard uses 2016 and 2021 Census data for six major CMAs — Toronto, Montréal, Ottawa-Gatineau, Vancouver, Calgary, and Edmonton — combined with national transport-emissions statistics, to show how commuting changed before and after the pandemic. We focus on social equity and sustainability: tracking which groups kept commuting in person, measuring how their mode choices shifted between transit and private vehicles, and linking those shifts to changes in transportation-related greenhouse-gas emissions.
+          </p>
+          <br>
+          <p>
+            Our primary audience is Toronto urban planners and transport staff who need to balance equity and climate goals when investing in infrastructure. The comparisons with the five other CMAs serve as reference points, helping you see whether Toronto's trends are typical or unusually severe.
           </p>
         </div>
       </section>
 
       <section id="vis0-section">
         <div class="narrative-text">
-          <h2>1. The Context: [Placeholder Topic Name]</h2>
+          <h2>1. Remote Work and Commuting Across Canada's Largest CMAs</h2>
           <p>
-            [Placeholder: Set the scene. Explain the general trend of Remote Work vs. Commuting across the entire
-            country or major cities. Give the user a baseline understanding.]
+            The pandemic fundamentally altered work and commuting patterns across Canada. Use the icon chart below to explore the scale and composition of these changes. Each icon represents a portion of the workforce, color-coded by their primary commute mode or work-from-home status. Select different regions from the sidebar to compare how Toronto's patterns stack up against other major cities.
           </p>
         </div>
 
@@ -320,10 +322,23 @@
         </div>
 
         <div class="narrative-text" style="margin-top: 40px;">
-          <h3>[Placeholder: Subsection Title]</h3>
           <p>
-            [Placeholder: Transition text explaining the shift from general overview to specific comparison. Comment on
-            what the icon chart above shows and introduce the comparison chart below.]
+            Between 2016 and 2021, all six CMAs in this dashboard saw a rise in working from home and a decline in the share of workers who commute every day. At the same time, the composition of commute modes among those who still travel to work shifted: public-transit shares generally fell, while private-vehicle and active-mode shares either held steady or grew slightly, depending on the city. These changes reshape how people move through each region and where transport infrastructure is most heavily used.
+          </p>
+          <br>
+          <p>
+            In the icon chart above, select a region to see the overall mix of work-from-home, private-vehicle, public-transit, and active/other commuters in 2016 and 2021. This view gives you a quick sense of scale — which cities have the largest commuting populations, and how big the work-from-home segment has become — before you focus on any specific mode.
+          </p>
+          <br>
+          <p>
+            In the city-ranking chart, you can then sort the six CMAs by transit decline, work-from-home growth, or total population. This makes it easy to see where Toronto sits relative to Montréal, Ottawa-Gatineau, Vancouver, Calgary, and Edmonton: for example, whether its drop in transit use is unusually steep given its increase in remote work, or whether it behaves like the other large cities.
+          </p>
+        </div>
+
+        <div class="narrative-text" style="margin-top: 40px;">
+          <h3>Comparing Toronto with Other CMAs</h3>
+          <p>
+            The two charts together highlight both composition and ranking. The icon chart shows, for each CMA, how commuters are divided among working from home, private vehicles, public transit, and active modes, while the ranking chart emphasizes where each city stands on key metrics such as transit decline and work-from-home growth. For Toronto, this combination is important: its transit drop may look similar in percentage terms to other CMAs, but because Toronto’s commuting population is much larger, even a modest percentage-point change represents a very large number of people and trips.
           </p>
         </div>
 
@@ -342,8 +357,7 @@
 
         <div class="narrative-text">
           <p>
-            [Placeholder: Transition/Observation. Comment on what the charts above show. "As we can see, while many
-            stayed home, a specific group did not..." Lead into the next section about demographics.]
+            However, these CMA-level summaries still mix together residents with very different levels of choice and flexibility. High-income professionals who could shift fully or partly to remote work are averaged together with low-income essential workers who had to keep commuting in person throughout the pandemic. To understand the implications for social equity, the next section focuses on who kept moving in Toronto’s labour force, where they live, and how their commute modes changed.
           </p>
         </div>
       </section>
@@ -352,15 +366,11 @@
         <div class="narrative-text">
           <h2>2. The Demographics: Who Kept Moving?</h2>
           <p>
-            [Placeholder: Introduce the specific population group (Essential Workers / Low Income). Explain why we are
-            zooming in on them specifically.]
+            While remote work disrupted mobility for many Canadians, a large share of the population actually had to travel to the workplace during the pandemic. Sectors such as food service, retail, maintenance, healthcare support, warehousing, delivery, and transportation require physical presence, pay less, and offer little chance to work from home. The lowest-paying job opportunities often further require in-person attendance.
           </p>
-          <blockquote>
-            [Placeholder: Optional highlight or quote about the specific user group.]
-          </blockquote>
+          <br>
           <p>
-            [Placeholder: Instructions. "Use the sidebar to filter by Industry or Income to see how the population size
-            varies."]
+            The interactive donut chart below lets you explore this variation directly. Hover over a segment to reveal the number and share of essential workers in each city for both 2016 and 2021. Use the sidebar filters to adjust income brackets or select specific regions—this helps you see how Toronto's essential workforce compares to other CMAs, and which populations were most affected by transportation disruptions during the pandemic.
           </p>
         </div>
 
@@ -369,18 +379,27 @@
             <div id="pie-chart-container" style="width: 100%; height: 100%;"></div>
           </div>
         </div>
+
+        <div class="narrative-text" style="margin-top: 40px;">
+          <p>
+            A large proportion of the low-income workforce has been concentrated in these essential sectors since 2020. More than a quarter of Toronto's workforce and not less than a third in Montréal consisted of low-income essential workers. Western cities such as Vancouver, Edmonton, and Calgary showed smaller shares, totaling only several hundred thousand commuters. Despite regional differences, these cities still maintained large populations of daily commuters who had no option to work remotely.
+          </p>
+          <br>
+          <p>
+            It is not surprising that indicators of mobility, like public transport use or delivery traffic, did not drop in tandem with overall commuting rates. What stands out is the <strong>persistence of commuting among essential workers</strong>. Rather than personal preference, transportation demand was determined by structural constraints in the labor market—these workers simply could not afford to stop moving.
+          </p>
+        </div>
       </section>
 
       <section id="vis1-bar-section" data-controls="vis1-bar-controls">
         <div class="narrative-text">
           <h2>Changes in Transit Habits</h2>
           <p>
-            [Placeholder: Analysis of the Bar Chart. Discuss the shift between Public Transit and Private Vehicles. Are
-            they driving more? Taking the bus less?]
+            Remote work reduced the number of daily commuters, but it also reshaped how remaining commuters travel. Between 2016 and 2021, public transit ridership dropped sharply, while private vehicle use held steady or increased slightly. Walking and cycling saw small gains, particularly for short urban trips.
           </p>
+          <br>
           <p>
-            [Placeholder: Insight. Connect the filters (Income/Industry) to the mode choice. E.g., "Retail workers
-            showed the largest drop in public transit usage..."]
+            However, these shifts varied significantly across worker groups. Use the interactive bar chart below to compare mode choices by income bracket or industry sector. Hover over bars to see exact percentages, toggle between 2016 and 2021, or enable the "Show Net Change" option to visualize how each mode gained or lost share over the five-year period.
           </p>
         </div>
 
@@ -389,6 +408,16 @@
             <div id="bar-chart-container" style="width: 100%; height: 100%;"></div>
           </div>
         </div>
+
+        <div class="narrative-text" style="margin-top: 40px;">
+          <p>
+            The chart reveals that mode shifts were far from uniform. Essential workers in lower-income brackets—those in retail, food service, or healthcare support—were much less able to switch to private vehicles compared to higher-income professionals. This disparity underscores a fundamental inequity: workers who could least afford to buy and maintain cars were also those whose transit options became less reliable or convenient during the pandemic.
+          </p>
+          <br>
+          <p>
+            For Toronto planners, this means transit investments cannot assume all riders have equal alternatives. Policies that prioritize service reliability, affordability, and safety for essential workers are not just equity measures—they are practical responses to the reality that a large segment of the workforce depends on public transit regardless of external shocks like COVID-19.
+          </p>
+        </div>
       </section>
 
       <section id="bridge" data-controls="vis1-bar-controls"
@@ -396,8 +425,11 @@
         <div class="narrative-text">
           <h2>From Behavior to Impact</h2>
           <p>
-            [Placeholder: Bridge Text. We have seen *how* people moved. Now, let's look at the *consequences* of these
-            movements, specifically regarding carbon footprint and city infrastructure.]
+            So far, we have looked at Toronto's commuting patterns through an equity lens: which essential workers continued to travel to work, and how their mode choices shifted between public transit and private vehicles. These behavioural changes matter not only for access and affordability, but also for Toronto’s climate commitments, because additional car trips from these groups add to transportation-related emissions.
+          </p>
+          <br>
+          <p>
+            In the final section, we step back to a national view and link commuting shares in 2016 and 2021 with greenhouse-gas emissions from the transportation sector. This allows you to judge whether the growth in remote work was large enough to offset higher car use, and to see how Toronto’s pattern fits within the broader Canadian trend.
           </p>
         </div>
       </section>
@@ -405,9 +437,9 @@
       <section id="vis2-section" data-controls="vis2-controls">
         <div class="narrative-text">
           <h2>3. Environmental Implications</h2>
+          <h3>2016 vs. 2021: How Commuting Changed Nationally</h3>
           <p>
-            [Placeholder: Intro to Vis 2. Explain the correlation between the mode shifts observed above and calculated
-            emissions.]
+            Looking at the national panel, the share of how people commute shifts noticeably between 2016 and 2021.
           </p>
         </div>
 
@@ -417,10 +449,15 @@
         </div>
 
         <div class="narrative-text" style="margin-top: 40px;">
-          <h3>National Transport GHG Emissions</h3>
           <p>
-            [Placeholder: Deep dive text for the emissions plot. Explain the trends in national transport emissions over
-            time, highlighting the significant drop in 2020 due to the pandemic and the subsequent recovery.]
+            Based on the chart, we can observe significant changes in commuting modes across the country. In particular, in 2021, the proportion of Canadians working remotely was significantly higher than in 2016. What was once uncommon has now become part of daily work routine. By contrast, public transit shows the opposite movement. In 2021, the proportion of commuters using public transit was lower than in 2016. Because we have only two census years available, we cannot observe the intermediate trends, but by 2021, public transit usage had not returned to its previous level. Meanwhile, private vehicles changed far less. Regardless of the year, cars consistently remained the primary commuting mode. Although the number of daily commuters decreased, most commuters still chose to drive.
+          </p>
+        </div>
+
+        <div class="narrative-text" style="margin-top: 40px;">
+          <h3>2016 vs. 2021: Where Emissions Fit into the Longer Trend</h3>
+          <p>
+            This chart shows the annual emissions from Canada's transportation sector, from 2010 to 2023, with special markings in 2016 and 2021 to match with the commuting data. We also highlight the sharp decline in 2020 due to the reduced travel activity during the pandemic.
           </p>
         </div>
 
@@ -430,24 +467,76 @@
               style="height: 500px; box-shadow: none; padding: 0;"></div>
           </div>
         </div>
+
+        <div class="narrative-text" style="margin-top: 40px;">
+          <p>
+            According to the chart, transportation emissions fell to their lowest level in 2020. This directly reflects the nationwide plunge in travel and economic activity during the pandemic. In 2021, emissions rebounded but remained below 2016 levels, and later years show a gradual increase. This shows that transportation emissions are sensitive to any change in social and economic life.
+          </p>
+          <br>
+          <p>
+            We should be cautious about the cause and effect on this issue, as this chart reflects not just the impact of changes in commuting patterns, but more generally, the impact of changes in society and the economy on transportation emissions across this time period. So, it does not indicate which specific factors drove emission declines or rebounds. But it confirms one thing that national transportation emissions in 2021 were lower than in 2016.
+          </p>
+        </div>
+
+        <div class="narrative-text" style="margin-top: 40px;">
+          <h3>How the Two Stories Relate</h3>
+          <p>
+            By 2021, more Canadians worked from home and fewer relied on transit. Over roughly the same period, national transportation emissions were lower than in 2016.
+          </p>
+          <br>
+          <p>
+            That overlap does not establish causation. Air travel, freight activity, fuel markets, and broader economic change influenced emissions along with commuting behaviors. No single factor explains the national trend. Yet commuting does not stand in isolation from the emissions system. Fewer days of commutes suggest fewer commuter trips. Fewer trips mean less mileage traveled. Less mileage driven translates to lower fuel consumption.
+          </p>
+          <br>
+          <p>
+            Working from home did not reshape emissions itself but was part of a wider reduction in movement, which affected the transport system as a whole. The charts show association, not quantitative attribution.
+          </p>
+        </div>
       </section>
 
       <section id="conclusion" data-controls="vis2-controls" style="min-height: 50vh;">
         <div class="narrative-text">
           <h2>Conclusion & Future Outlook</h2>
+          
+          <h3>What External Research Adds</h3>
           <p>
-            [Placeholder: Summary. Recap the 3 main findings from the sections above.]
+            Our charts cannot quantify how much emissions declined because of working from home. However, external research puts things into context. According to Statistics Canada (2021), if all jobs compatible with working remotely were done so, it is estimated that transportation-related emissions would be about 9.5 million tonnes less per year. According to a 2024 study from Carleton University, hybrid and remote work arrangements generally lead to a net reduction in transportation emissions, as fewer commute days typically translate into fewer kilometres traveled and lower fuel consumption, even after accounting for increased energy use at home (Sepanta et al., 2024).
           </p>
+          <br>
           <p>
-            [Placeholder: Call to Action or Final Thought. What should policy makers or citizens do with this
-            information? e.g., "Improving transit safety is crucial for essential workers..."]
+            Overall, compared with 2016, Canada had more people working from home and a smaller share commuting by public transit in 2021. Cars still dominated and emissions were below pre-2020 levels. For urban planners, this does not mean telework guarantees emissions reductions; rather, it means commuting patterns matter, and changes ripple. In particular, travel frequency, timing, and mode are interacting with emissions, along with many other forces that shape the transport system. Ultimately, remote working is not a solution in itself but rather part of the terrain on which planners are now working.
           </p>
         </div>
       </section>
 
-      <footer>
-        <p>[Placeholder: Data Sources & Methodology Description]</p>
-        <p>[Placeholder: Credits / Author Name / Date]</p>
+      <footer style="background-color: #f8f9fa; padding: 40px 0; margin-top: 60px; border-top: 2px solid #dee2e6;">
+        <div class="narrative-text" style="max-width: 900px; margin: 0 auto;">
+          <h3 style="margin-bottom: 20px; color: #1b5e20;">References</h3>
+          
+          <p style="margin-left: 2em; text-indent: -2em; margin-bottom: 15px; line-height: 1.6;">
+            Sepanta, F., Sirati, M., & O'Brien, W. (2024). Quantifying the net impact of hybrid work on greenhouse gas emissions associated with workplace and residential energy consumption. <em>Energy and Buildings</em>.
+          </p>
+          
+          <p style="margin-left: 2em; text-indent: -2em; margin-bottom: 30px; line-height: 1.6;">
+            Statistics Canada. (2021). Working from home: Potential implications for public transit and greenhouse gas emissions. Retrieved from <a href="https://www150.statcan.gc.ca/n1/pub/36-28-0001/2021004/article/00005-eng.htm" target="_blank" style="color: #1b5e20; text-decoration: underline;">https://www150.statcan.gc.ca/n1/pub/36-28-0001/2021004/article/00005-eng.htm</a>
+          </p>
+          
+          <h3 style="margin-bottom: 15px; color: #1b5e20;">Data Sources</h3>
+          
+          <p style="margin-bottom: 8px; line-height: 1.6;">
+            <strong>Census data:</strong> Statistics Canada, 2016 and 2021 Census Public Use Microdata Files (PUMF)
+          </p>
+          
+          <p style="margin-bottom: 30px; line-height: 1.6;">
+            <strong>National transport emissions data:</strong> Environment and Climate Change Canada, National Inventory Report
+          </p>
+          
+          <hr style="border: none; border-top: 1px solid #dee2e6; margin: 30px 0;">
+          
+          <p style="text-align: center; font-size: 0.9em; color: #666; margin: 0;">
+            Dashboard created for STA313 course project, December 2025
+          </p>
+        </div>
       </footer>
 
     </main>
