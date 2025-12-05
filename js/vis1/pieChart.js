@@ -83,70 +83,123 @@ class PieChart {
       .style('fill', '#702040') // Updated to match theme
       .text('Essential Workers by Sector (2016 vs 2021)');
 
-    // Add legend
-    this.createLegend();
-  }
-
-  createLegend() {
-    // Use CMA_METADATA from utils.js if available, otherwise hardcode
-    const cmaCodes = ['535', '462', '505', '933', '825', '835'];
-    const legendData = cmaCodes.map(code => ({
-      name: getCMAName(code),
-      color: getCMAColor(code)
-    }));
-
+    // Create legend group (will be populated in update)
     const legendY = this.height - this.margin.bottom + 10;
-    const legend = this.svg.append('g')
+    this.legendGroup = this.svg.append('g')
       .attr('class', 'legend')
       .attr('transform', `translate(${this.margin.left}, ${legendY})`);
+  }
+
+  updateLegend(data) {
+    // Extract unique CMAs from current data
+    const uniqueCMAs = new Map();
+    
+    // Collect CMAs from both 2016 and 2021 data
+    if (data.data2016) {
+      data.data2016.forEach(d => {
+        if (!uniqueCMAs.has(d.cma)) {
+          uniqueCMAs.set(d.cma, {
+            name: d.name,
+            color: d.color
+          });
+        }
+      });
+    }
+    
+    if (data.data2021) {
+      data.data2021.forEach(d => {
+        if (!uniqueCMAs.has(d.cma)) {
+          uniqueCMAs.set(d.cma, {
+            name: d.name,
+            color: d.color
+          });
+        }
+      });
+    }
+
+    // Convert to array and sort by CMA code to maintain consistent order
+    const legendData = Array.from(uniqueCMAs.entries())
+      .map(([cma, info]) => ({ cma, ...info }))
+      .sort((a, b) => a.cma.localeCompare(b.cma));
 
     // Calculate layout
-    const itemsPerRow = 3; // Reduced to 3 to fit better
+    const itemsPerRow = 3;
     const itemWidth = 140;
     const rowHeight = 25;
 
-    const legendItems = legend.selectAll('.legend-item')
-      .data(legendData)
-      .enter()
+    // Bind data to legend items
+    const legendItems = this.legendGroup.selectAll('.legend-item')
+      .data(legendData, d => d.cma);
+
+    // Remove old items
+    legendItems.exit()
+      .transition()
+      .duration(300)
+      .style('opacity', 0)
+      .remove();
+
+    // Add new items
+    const legendItemsEnter = legendItems.enter()
       .append('g')
       .attr('class', 'legend-item')
+      .style('opacity', 0);
+
+    legendItemsEnter.append('rect')
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('rx', 3);
+
+    legendItemsEnter.append('text')
+      .attr('x', 20)
+      .attr('y', 12)
+      .style('font-size', '12px')
+      .style('fill', '#333');
+
+    // Merge and update
+    const legendItemsMerged = legendItems.merge(legendItemsEnter);
+
+    legendItemsMerged
+      .transition()
+      .duration(300)
+      .style('opacity', 1)
       .attr('transform', (d, i) => {
         const row = Math.floor(i / itemsPerRow);
         const col = i % itemsPerRow;
-        // Center the legend block
         const xOffset = (this.width - (itemsPerRow * itemWidth)) / 2;
         return `translate(${xOffset + col * itemWidth}, ${row * rowHeight})`;
       });
 
-    legendItems.append('rect')
-      .attr('width', 15)
-      .attr('height', 15)
-      .attr('fill', d => d.color)
-      .attr('rx', 3); // Rounded corners
+    legendItemsMerged.select('rect')
+      .attr('fill', d => d.color);
 
-    legendItems.append('text')
-      .attr('x', 20)
-      .attr('y', 12)
-      .style('font-size', '12px')
-      .style('fill', '#333')
+    legendItemsMerged.select('text')
       .text(d => d.name);
 
-    // Add Inner/Outer layer labels below legend
-    const guideY = (Math.ceil(legendData.length / itemsPerRow) * rowHeight) + 15;
-    const guideGroup = legend.append('g')
-      .attr('transform', `translate(${this.width / 2}, ${guideY})`);
+    // Update or create guide text
+    let guideGroup = this.legendGroup.select('.legend-guide');
+    if (guideGroup.empty()) {
+      guideGroup = this.legendGroup.append('g')
+        .attr('class', 'legend-guide');
+      
+      guideGroup.append('text')
+        .attr('text-anchor', 'middle')
+        .style('font-size', '12px')
+        .style('fill', '#666')
+        .style('font-style', 'italic')
+        .text('Inner Ring: 2016  |  Outer Ring: 2021');
+    }
 
-    guideGroup.append('text')
-      .attr('text-anchor', 'middle')
-      .style('font-size', '12px')
-      .style('fill', '#666')
-      .style('font-style', 'italic')
-      .text('Inner Ring: 2016  |  Outer Ring: 2021');
+    // Update guide position based on number of rows
+    const guideY = (Math.ceil(legendData.length / itemsPerRow) * rowHeight) + 15;
+    guideGroup.attr('transform', `translate(${this.width / 2}, ${guideY})`);
   }
 
   update(data) {
     // data structure: { data2016: [], data2021: [], workerChangePercent: number }
     this.data = data;
+
+    // Update legend based on current data
+    this.updateLegend(data);
 
     // Update center text with growth rate
     this.updateCenterText(data.workerChangePercent);
