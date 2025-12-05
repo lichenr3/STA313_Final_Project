@@ -81,7 +81,7 @@ class PieChart {
       .style('font-size', '18px')
       .style('font-weight', 'bold')
       .style('fill', '#702040') // Updated to match theme
-      .text('Low-Income Essential Workers Distribution (2016 vs 2021)');
+      .text('Essential Workers by Sector (2016 vs 2021)');
 
     // Add legend
     this.createLegend();
