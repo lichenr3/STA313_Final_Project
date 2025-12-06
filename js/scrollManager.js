@@ -9,11 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarToggle = document.getElementById('sidebar-toggle');
 
     let isSidebarOpen = false;
+    let userHasClosedSidebar = false; // Track if user manually closed sidebar
 
     // 1. Sidebar Toggle Logic
     if (sidebarToggle && sidebar) {
         sidebarToggle.addEventListener('click', () => {
-            toggleSidebar(!isSidebarOpen);
+            const newState = !isSidebarOpen;
+            toggleSidebar(newState);
+            // If user manually closes sidebar, remember this
+            if (!newState) {
+                userHasClosedSidebar = true;
+            } else {
+                userHasClosedSidebar = false;
+            }
         });
     }
 
@@ -52,9 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 activateControls(targetId);
 
                 // Auto-open sidebar if we hit a chart section (vis0, vis1, vis2)
-                // and it's not already open.
+                // and it's not already open, AND user hasn't manually closed it.
                 // We assume 'intro' doesn't need to auto-open it.
-                if (targetId && targetId !== 'intro-controls' && !isSidebarOpen) {
+                if (targetId && targetId !== 'intro-controls' && !isSidebarOpen && !userHasClosedSidebar) {
                     // Check if it's a "vis" section
                     if (targetId.includes('vis')) {
                         toggleSidebar(true);
